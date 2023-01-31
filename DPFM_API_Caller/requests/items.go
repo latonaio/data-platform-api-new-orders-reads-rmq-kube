@@ -10,6 +10,6 @@ type Items struct {
 	ProductDescription          *string  `json:"ProductDescription"`
 	ConditionRateValue          *float32 `json:"ConditionRateValue"`
 	ConfirmedDeliveryDate       *string  `json:"ConfirmedDeliveryDate"`
-	ItemIsCanceled              bool     `json:"ItemIsCanceled"`
+	ItemIsCancelled             bool     `json:"ItemIsCancelled"`
 	ItemIsDeleted               bool     `json:"ItemIsDeleted"`
 }

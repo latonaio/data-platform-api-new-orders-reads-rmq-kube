@@ -122,11 +122,11 @@ func (c *DPFMAPICaller) Header(
 		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
 		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
 		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
-		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.HeaderIsCanceled,header.HeaderIsDeleted
+		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.HeaderIsCancelled,header.HeaderIsDeleted
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
 		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_terms_payment_terms_text_data AS terms
 		ON header.PaymentTerms = terms.PaymentTerms
-		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_text_data AS method
+		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_payment_method_text_data AS method
 		ON header.PaymentMethod = method.PaymentMethod
 		WHERE OrderID = ?;`, orderID,
 	)
@@ -163,7 +163,7 @@ func (c *DPFMAPICaller) Headers(
 		where = fmt.Sprintf("%s\nAND HeaderDeliveryStatus = '%s'", where, *input.Header.HeaderDeliveryStatus)
 	}
 	if input.Header.HeaderIsCancelled != nil {
-		where = fmt.Sprintf("%s\nAND HeaderIsCanceled = %v", where, *input.Header.HeaderIsCancelled)
+		where = fmt.Sprintf("%s\nAND HeaderIsCancelled = %v", where, *input.Header.HeaderIsCancelled)
 	}
 	if input.Header.HeaderIsDeleted != nil {
 		where = fmt.Sprintf("%s\nAND HeaderIsDeleted = %v", where, *input.Header.HeaderIsDeleted)
@@ -179,8 +179,21 @@ func (c *DPFMAPICaller) Headers(
 	}
 
 	rows, err := c.db.Query(
-		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data
+		`SELECT
+		header.OrderID,header.OrderDate,header.OrderType,header.SupplyChainRelationshipID,header.SupplyChainRelationshipBillingID,header.
+		SupplyChainRelationshipPaymentID,header.Buyer,header.Seller,header.BillToParty,header.BillFromParty,header.BillToCountry,header.
+		BillFromCountry,header.Payer,header.Payee,header.CreationDate,header.LastChangeDate,header.ContractType,header.OrderValidityStartDate,header.
+		OrderValidityEndDate,header.InvoicePeriodStartDate,header.InvoicePeriodEndDate,header.TotalNetAmount,header.TotalTaxAmount,header.
+		TotalGrossAmount,header.HeaderDeliveryStatus,header.HeaderBillingStatus,header.HeaderDocReferenceStatus,header.
+		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
+		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
+		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
+		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.HeaderIsCancelled,header.HeaderIsDeleted
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
+		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_terms_payment_terms_text_data AS terms
+		ON header.PaymentTerms = terms.PaymentTerms
+		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_payment_method_text_data AS method
+		ON header.PaymentMethod = method.PaymentMethod
 		` + where + idWhere + `;`)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -215,7 +228,28 @@ func (c *DPFMAPICaller) Item(
 	}
 	repeat := strings.Repeat("(?,?),", cnt-1) + "(?,?)"
 	rows, err := c.db.Query(
-		`SELECT *
+		`SELECT 
+OrderID,OrderItem,OrderItemCategory,SupplyChainRelationshipID,SupplyChainRelationshipDeliveryID,
+SupplyChainRelationshipDeliveryPlantID,SupplyChainRelationshipStockConfPlantID,SupplyChainRelationshipProductionPlantID,
+OrderItemText,OrderItemTextByBuyer,OrderItemTextBySeller,Product,ProductStandardID,ProductGroup,BaseUnit,
+PricingDate,PriceDetnExchangeRate,RequestedDeliveryDate,DeliverToParty,DeliverFromParty,CreationDate,
+LastChangeDate,DeliverToPlant,DeliverToPlantTimeZone,DeliverToPlantStorageLocation,ProductIsBatchManagedInDeliverToPlant,
+BatchMgmtPolicyInDeliverToPlant,DeliverToPlantBatch,DeliverToPlantBatchValidityStartDate,DeliverToPlantBatchValidityEndDate,
+DeliverFromPlant,DeliverFromPlantTimeZone,DeliverFromPlantStorageLocation,ProductIsBatchManagedInDeliverFromPlant,
+BatchMgmtPolicyInDeliverFromPlant,DeliverFromPlantBatch,DeliverFromPlantBatchValidityStartDate,
+DeliverFromPlantBatchValidityEndDate,DeliveryUnit,StockConfirmationBusinessPartner,StockConfirmationPlant,
+StockConfirmationPlantTimeZone,ProductIsBatchManagedInStockConfirmationPlant,
+StockConfirmationPlantBatch,StockConfirmationPlantBatchValidityStartDate,StockConfirmationPlantBatchValidityEndDate,
+ServicesRenderingDate,OrderQuantityInBaseUnit,OrderQuantityInDeliveryUnit,StockConfirmationPolicy,StockConfirmationStatus,
+ConfirmedOrderQuantityInBaseUnit,ItemWeightUnit,ProductGrossWeight,ItemGrossWeight,ProductNetWeight,ItemNetWeight,
+NetAmount,TaxAmount,GrossAmount,InvoiceDocumentDate,ProductionPlantBusinessPartner,ProductionPlant,ProductionPlantTimeZone,
+ProductionPlantStorageLocation,ProductIsBatchManagedInProductionPlant,BatchMgmtPolicyInProductionPlant,ProductionPlantBatch,
+ProductionPlantBatchValidityStartDate,ProductionPlantBatchValidityEndDate,Incoterms,TransactionTaxClassification,
+ProductTaxClassificationBillToCountry,ProductTaxClassificationBillFromCountry,DefinedTaxClassification,AccountAssignmentGroup,
+ProductAccountAssignmentGroup,PaymentTerms,DueCalculationBaseDate,PaymentDueDate,NetPaymentDays,PaymentMethod,Project,
+AccountingExchangeRate,ReferenceDocument,ReferenceDocumentItem,ItemCompleteDeliveryIsDefined,ItemDeliveryStatus,IssuingStatus,
+ReceivingStatus,ItemBillingStatus,TaxCode,TaxRate,CountryOfOrigin,CountryOfOriginLanguage,ItemBlockStatus,
+ItemDeliveryBlockStatus,ItemBillingBlockStatus,ItemIsCancelled,ItemIsDeleted
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data
 		WHERE (OrderID, OrderItem) IN ( `+repeat+` );`, args...,
 	)
@@ -263,7 +297,7 @@ func (c *DPFMAPICaller) Items(
 			where = fmt.Sprintf("%s\nAND item.ItemDeliveryBlockStatus = %v", where, *item.ItemDeliveryBlockStatus)
 		}
 		if item.ItemIsCancelled != nil {
-			where = fmt.Sprintf("%s\nAND item.ItemIsCanceled = %v", where, *item.ItemIsCancelled)
+			where = fmt.Sprintf("%s\nAND item.ItemIsCancelled = %v", where, *item.ItemIsCancelled)
 		}
 		if item.ItemIsDeleted != nil {
 			where = fmt.Sprintf("%s\nAND item.ItemIsDeleted = %v", where, *item.ItemIsDeleted)
@@ -278,13 +312,13 @@ func (c *DPFMAPICaller) Items(
 			item.OrderItemText,
 			item.OrderItemTextByBuyer,
 			item.OrderItemTextBySeller,
-			item.OrderQuantityInDeliveryUnit,
+			item.OrderQuantityInBaseUnit,
 			item.Product,
 			item.NetAmount,
 			item.DeliverToParty,
 			item.DeliverFromParty,
 			item.RequestedDeliveryDate,
-			item.ItemIsCanceled,
+			item.ItemIsCancelled,
 			item.ItemIsDeleted
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as header
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data as item
@@ -317,18 +351,15 @@ func (c *DPFMAPICaller) ItemPricingElement(
 
 	cnt := 0
 	for _, v := range item {
-		itemPricingElement := v.ItemPricingElement
-		for _, w := range itemPricingElement {
-			args = append(args, orderID, v.OrderItem, w.PricingProcedureCounter)
-		}
+		args = append(args, orderID, v.OrderItem)
 		cnt++
 	}
-	repeat := strings.Repeat("(?,?,?),", cnt-1) + "(?,?,?)"
+	repeat := strings.Repeat("(?,?),", cnt-1) + "(?,?)"
 
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_pricing_element_data
-		WHERE (OrderID, OrderItem, PricingProcedureCounter) IN ( `+repeat+` );`, args...,
+		WHERE (OrderID, OrderItem) IN ( `+repeat+` );`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)

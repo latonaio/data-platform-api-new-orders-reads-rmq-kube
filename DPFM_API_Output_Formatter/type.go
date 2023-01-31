@@ -169,7 +169,9 @@ type Item struct {
 	BatchMgmtPolicyInDeliverToPlant               *string  `json:"BatchMgmtPolicyInDeliverToPlant"`
 	DeliverToPlantBatch                           *string  `json:"DeliverToPlantBatch"`
 	DeliverToPlantBatchValidityStartDate          *string  `json:"DeliverToPlantBatchValidityStartDate"`
+	DeliverToPlantBatchValidityStartTime          *string  `json:"DeliverToPlantBatchValidityStartTime"`
 	DeliverToPlantBatchValidityEndDate            *string  `json:"DeliverToPlantBatchValidityEndDate"`
+	DeliverToPlantBatchValidityEndTime            *string  `json:"DeliverToPlantBatchValidityEndTime"`
 	DeliverFromPlant                              *string  `json:"DeliverFromPlant"`
 	DeliverFromPlantTimeZone                      *string  `json:"DeliverFromPlantTimeZone"`
 	DeliverFromPlantStorageLocation               *string  `json:"DeliverFromPlantStorageLocation"`
@@ -177,16 +179,20 @@ type Item struct {
 	BatchMgmtPolicyInDeliverFromPlant             *string  `json:"BatchMgmtPolicyInDeliverFromPlant"`
 	DeliverFromPlantBatch                         *string  `json:"DeliverFromPlantBatch"`
 	DeliverFromPlantBatchValidityStartDate        *string  `json:"DeliverFromPlantBatchValidityStartDate"`
+	DeliverFromPlantBatchValidityStartTime        *string  `json:"DeliverFromPlantBatchValidityStartTime"`
 	DeliverFromPlantBatchValidityEndDate          *string  `json:"DeliverFromPlantBatchValidityEndDate"`
+	DeliverFromPlantBatchValidityEndTime          *string  `json:"DeliverFromPlantBatchValidityEndTime"`
 	DeliveryUnit                                  *string  `json:"DeliveryUnit"`
 	StockConfirmationBusinessPartner              *int     `json:"StockConfirmationBusinessPartner"`
 	StockConfirmationPlant                        *string  `json:"StockConfirmationPlant"`
 	StockConfirmationPlantTimeZone                *string  `json:"StockConfirmationPlantTimeZone"`
 	ProductIsBatchManagedInStockConfirmationPlant *bool    `json:"ProductIsBatchManagedInStockConfirmationPlant"`
-	BatchMgmtPolicyStockConfirmationInPlant       *string  `json:"BatchMgmtPolicyStockConfirmationInPlant"`
+	BatchMgmtPolicyInStockConfirmationPlant       *string  `json:"BatchMgmtPolicyInStockConfirmationPlant"`
 	StockConfirmationPlantBatch                   *string  `json:"StockConfirmationPlantBatch"`
 	StockConfirmationPlantBatchValidityStartDate  *string  `json:"StockConfirmationPlantBatchValidityStartDate"`
+	StockConfirmationPlantBatchValidityStartTime  *string  `json:"StockConfirmationPlantBatchValidityStartTime"`
 	StockConfirmationPlantBatchValidityEndDate    *string  `json:"StockConfirmationPlantBatchValidityEndDate"`
+	StockConfirmationPlantBatchValidityEndTime    *string  `json:"StockConfirmationPlantBatchValidityEndTime"`
 	ServicesRenderingDate                         *string  `json:"ServicesRenderingDate"`
 	OrderQuantityInBaseUnit                       *float32 `json:"OrderQuantityInBaseUnit"`
 	OrderQuantityInDeliveryUnit                   *float32 `json:"OrderQuantityInDeliveryUnit"`
@@ -210,7 +216,9 @@ type Item struct {
 	BatchMgmtPolicyInProductionPlant              *string  `json:"BatchMgmtPolicyInProductionPlant"`
 	ProductionPlantBatch                          *string  `json:"ProductionPlantBatch"`
 	ProductionPlantBatchValidityStartDate         *string  `json:"ProductionPlantBatchValidityStartDate"`
+	ProductionPlantBatchValidityStartTime         *string  `json:"ProductionPlantBatchValidityStartTime"`
 	ProductionPlantBatchValidityEndDate           *string  `json:"ProductionPlantBatchValidityEndDate"`
+	ProductionPlantBatchValidityEndTime           *string  `json:"ProductionPlantBatchValidityEndTime"`
 	Incoterms                                     *string  `json:"Incoterms"`
 	TransactionTaxClassification                  *string  `json:"TransactionTaxClassification"`
 	ProductTaxClassificationBillToCountry         *string  `json:"ProductTaxClassificationBillToCountry"`
