@@ -98,7 +98,8 @@ func callProcess(rmq *rabbitmq.RabbitmqClient, caller *dpfm_api_caller.DPFMAPICa
 
 	l.JsonParseOut(output)
 	//rmq.Send(conf.RMQ.QueueToResponse(), output)
-	rmq.Send("nestjs-data-connection-request-control-manager-consume", output)
+
+	// rmq.Send("nestjs-data-connection-request-control-manager-consume", output)
 	rmq.Send("data-platform-api-request-reads-cache-manager-receive-queue", output)
 
 	return nil

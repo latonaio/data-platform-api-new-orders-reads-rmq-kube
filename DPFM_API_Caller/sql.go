@@ -30,6 +30,7 @@ func (c *DPFMAPICaller) readSqlProcess(
 	var headersBySeller *[]dpfm_api_output_formatter.HeadersBySeller
 	var headersByBuyer *[]dpfm_api_output_formatter.HeadersByBuyer
 	// var items *[]dpfm_api_output_formatter.Items
+
 	for _, fn := range accepter {
 		switch fn {
 		case "Header":
@@ -122,7 +123,7 @@ func (c *DPFMAPICaller) Header(
 		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
 		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
 		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
-		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.HeaderIsCancelled,header.HeaderIsDeleted
+		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.IsCancelled,header.IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
 		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_terms_payment_terms_text_data AS terms
 		ON header.PaymentTerms = terms.PaymentTerms
@@ -162,11 +163,11 @@ func (c *DPFMAPICaller) Headers(
 	if input.Header.HeaderDeliveryStatus != nil {
 		where = fmt.Sprintf("%s\nAND HeaderDeliveryStatus = '%s'", where, *input.Header.HeaderDeliveryStatus)
 	}
-	if input.Header.HeaderIsCancelled != nil {
-		where = fmt.Sprintf("%s\nAND HeaderIsCancelled = %v", where, *input.Header.HeaderIsCancelled)
+	if input.Header.IsCancelled != nil {
+		where = fmt.Sprintf("%s\nAND IsCancelled = %v", where, *input.Header.IsCancelled)
 	}
-	if input.Header.HeaderIsDeleted != nil {
-		where = fmt.Sprintf("%s\nAND HeaderIsDeleted = %v", where, *input.Header.HeaderIsDeleted)
+	if input.Header.IsMarkedForDeletion != nil {
+		where = fmt.Sprintf("%s\nAND IsMarkedForDeletion = %v", where, *input.Header.IsMarkedForDeletion)
 	}
 
 	idWhere := ""
@@ -188,7 +189,7 @@ func (c *DPFMAPICaller) Headers(
 		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
 		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
 		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
-		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.HeaderIsCancelled,header.HeaderIsDeleted
+		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.IsCancelled,header.IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
 		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_terms_payment_terms_text_data AS terms
 		ON header.PaymentTerms = terms.PaymentTerms
@@ -251,7 +252,7 @@ func (c *DPFMAPICaller) Item(
 		ProductAccountAssignmentGroup,PaymentTerms,DueCalculationBaseDate,PaymentDueDate,NetPaymentDays,PaymentMethod,Project,
 		AccountingExchangeRate,ReferenceDocument,ReferenceDocumentItem,ItemCompleteDeliveryIsDefined,ItemDeliveryStatus,IssuingStatus,
 		ReceivingStatus,ItemBillingStatus,TaxCode,TaxRate,CountryOfOrigin,CountryOfOriginLanguage,ItemBlockStatus,
-		ItemDeliveryBlockStatus,ItemBillingBlockStatus,ItemIsCancelled,ItemIsDeleted
+		ItemDeliveryBlockStatus,ItemBillingBlockStatus,IsCancelled,IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data
 		WHERE (OrderID, OrderItem) IN ( `+repeat+` );`, args...,
 	)
@@ -281,7 +282,7 @@ func (c *DPFMAPICaller) Items(
 		item = &input.Header.Item[0]
 	}
 	where := fmt.Sprintf("WHERE item.OrderID IS NOT NULL\nAND header.OrderID = %d", input.Header.OrderID)
-	where = fmt.Sprintf("%s\nAND header.HeaderIsDeleted = %v", where, *input.Header.HeaderIsDeleted)
+	where = fmt.Sprintf("%s\nAND header.IsMarkedForDeletion = %v", where, *input.Header.IsMarkedForDeletion)
 	if input.Header.Buyer != nil {
 		where = fmt.Sprintf("%s\nAND header.Buyer = %d", where, *input.Header.Buyer)
 	}
@@ -298,11 +299,11 @@ func (c *DPFMAPICaller) Items(
 		if item.ItemDeliveryBlockStatus != nil {
 			where = fmt.Sprintf("%s\nAND item.ItemDeliveryBlockStatus = %v", where, *item.ItemDeliveryBlockStatus)
 		}
-		if item.ItemIsCancelled != nil {
-			where = fmt.Sprintf("%s\nAND item.ItemIsCancelled = %v", where, *item.ItemIsCancelled)
+		if item.IsCancelled != nil {
+			where = fmt.Sprintf("%s\nAND item.IsCancelled = %v", where, *item.IsCancelled)
 		}
-		if item.ItemIsDeleted != nil {
-			where = fmt.Sprintf("%s\nAND item.ItemIsDeleted = %v", where, *item.ItemIsDeleted)
+		if item.IsMarkedForDeletion != nil {
+			where = fmt.Sprintf("%s\nAND item.IsMarkedForDeletion = %v", where, *item.IsMarkedForDeletion)
 		}
 	}
 
@@ -323,8 +324,8 @@ func (c *DPFMAPICaller) Items(
 			item.DeliverToParty,
 			item.DeliverFromParty,
 			item.RequestedDeliveryDate,
-			item.ItemIsCancelled,
-			item.ItemIsDeleted
+			item.IsCancelled,
+			item.IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as header
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data as item
 		ON header.OrderID = item.OrderID ` + where + ` ;`)

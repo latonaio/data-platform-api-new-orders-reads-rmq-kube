@@ -12,14 +12,14 @@
 		"ReferenceDocumentItem": null
 	},
 	"Orders": {
-		"OrderID": 20,
+		"OrderID": 21,
 		"OrderDate": null,
 		"OrderType": "",
 		"SupplyChainRelationshipID": null,
 		"SupplyChainRelationshipBillingID": null,
 		"SupplyChainRelationshipPaymentID": null,
 		"Buyer": 101,
-		"Seller": 201,
+		"Seller": 701,
 		"BillToParty": null,
 		"BillFromParty": null,
 		"BillToCountry": "",
@@ -200,7 +200,7 @@
 					{
 						"SupplyChainRelationshipID": 1,
 						"Buyer": 101,
-						"Seller": 201,
+						"Seller": 701,
 						"PricingProcedureCounter": 1,
 						"ConditionRecord": null,
 						"ConditionSequentialNumber": null,
@@ -355,7 +355,7 @@
 					{
 						"SupplyChainRelationshipID": 1,
 						"Buyer": 101,
-						"Seller": 201,
+						"Seller": 701,
 						"PricingProcedureCounter": 1,
 						"ConditionRecord": null,
 						"ConditionSequentialNumber": null,
@@ -411,7 +411,7 @@
 			},
 			{
 				"PartnerFunction": "SELLER",
-				"BusinessPartner": 201,
+				"BusinessPartner": 701,
 				"BusinessPartnerFullName": "",
 				"BusinessPartnerName": "",
 				"Organization": "",

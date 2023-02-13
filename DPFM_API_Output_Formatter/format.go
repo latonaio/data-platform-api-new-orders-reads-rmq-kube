@@ -61,8 +61,8 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			&pm.HeaderBlockStatus,
 			&pm.HeaderDeliveryBlockStatus,
 			&pm.HeaderBillingBlockStatus,
-			&pm.HeaderIsCancelled,
-			&pm.HeaderIsDeleted,
+			&pm.IsCancelled,
+			&pm.IsMarkedForDeletion,
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
@@ -116,8 +116,8 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			HeaderBlockStatus:                data.HeaderBlockStatus,
 			HeaderDeliveryBlockStatus:        data.HeaderDeliveryBlockStatus,
 			HeaderBillingBlockStatus:         data.HeaderBillingBlockStatus,
-			HeaderIsCancelled:                data.HeaderIsCancelled,
-			HeaderIsDeleted:                  data.HeaderIsDeleted,
+			IsCancelled:                      data.IsCancelled,
+			IsMarkedForDeletion:              data.IsMarkedForDeletion,
 		})
 	}
 	if i == 0 {
@@ -382,8 +382,8 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			&pm.ItemBlockStatus,
 			&pm.ItemDeliveryBlockStatus,
 			&pm.ItemBillingBlockStatus,
-			&pm.ItemIsCancelled,
-			&pm.ItemIsDeleted,
+			&pm.IsCancelled,
+			&pm.IsMarkedForDeletion,
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
@@ -501,8 +501,8 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			ItemBlockStatus:                               data.ItemBlockStatus,
 			ItemDeliveryBlockStatus:                       data.ItemDeliveryBlockStatus,
 			ItemBillingBlockStatus:                        data.ItemBillingBlockStatus,
-			ItemIsCancelled:                               data.ItemIsCancelled,
-			ItemIsDeleted:                                 data.ItemIsDeleted,
+			IsCancelled:                                   data.IsCancelled,
+			IsMarkedForDeletion:                           data.IsMarkedForDeletion,
 		})
 	}
 
@@ -534,8 +534,8 @@ func ConvertToItems(rows *sql.Rows) (*[]Item, error) {
 			&pm.DeliverToParty,
 			&pm.DeliverFromParty,
 			&pm.RequestedDeliveryDate,
-			&pm.ItemIsCancelled,
-			&pm.ItemIsDeleted,
+			&pm.IsCancelled,
+			&pm.IsMarkedForDeletion,
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
@@ -559,8 +559,8 @@ func ConvertToItems(rows *sql.Rows) (*[]Item, error) {
 			DeliverToParty:              data.DeliverToParty,
 			DeliverFromParty:            data.DeliverFromParty,
 			RequestedDeliveryDate:       data.RequestedDeliveryDate,
-			ItemIsCancelled:             data.ItemIsCancelled,
-			ItemIsDeleted:               data.ItemIsDeleted,
+			IsCancelled:             	 data.IsCancelled,
+			IsMarkedForDeletion:         data.IsMarkedForDeletion,
 		})
 	}
 	if i == 0 {

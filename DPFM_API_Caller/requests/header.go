@@ -46,6 +46,6 @@ type Header struct {
 	HeaderBlockStatus                *bool    `json:"HeaderBlockStatus"`
 	HeaderDeliveryBlockStatus        *bool    `json:"HeaderDeliveryBlockStatus"`
 	HeaderBillingBlockStatus         *bool    `json:"HeaderBillingBlockStatus"`
-	HeaderIsCancelled                *bool    `json:"HeaderIsCancelled"`
-	HeaderIsDeleted                  *bool    `json:"HeaderIsDeleted"`
+	IsCancelled                		 *bool    `json:"IsCancelled"`
+	IsMarkedForDeletion              *bool    `json:"IsMarkedForDeletion"`
 }
