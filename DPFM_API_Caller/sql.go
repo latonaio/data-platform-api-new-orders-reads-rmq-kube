@@ -120,7 +120,7 @@ func (c *DPFMAPICaller) Header(
 		BillFromCountry,header.Payer,header.Payee,header.CreationDate,header.LastChangeDate,header.ContractType,header.OrderValidityStartDate,header.
 		OrderValidityEndDate,header.InvoicePeriodStartDate,header.InvoicePeriodEndDate,header.TotalNetAmount,header.TotalTaxAmount,header.
 		TotalGrossAmount,header.HeaderDeliveryStatus,header.HeaderBillingStatus,header.HeaderDocReferenceStatus,header.
-		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
+		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.RequestedDeliveryTime,header.HeaderCompleteDeliveryIsDefined,header.
 		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
 		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
 		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.IsCancelled,header.IsMarkedForDeletion
@@ -186,7 +186,7 @@ func (c *DPFMAPICaller) Headers(
 		BillFromCountry,header.Payer,header.Payee,header.CreationDate,header.LastChangeDate,header.ContractType,header.OrderValidityStartDate,header.
 		OrderValidityEndDate,header.InvoicePeriodStartDate,header.InvoicePeriodEndDate,header.TotalNetAmount,header.TotalTaxAmount,header.
 		TotalGrossAmount,header.HeaderDeliveryStatus,header.HeaderBillingStatus,header.HeaderDocReferenceStatus,header.
-		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
+		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
 		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
 		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
 		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.IsCancelled,header.IsMarkedForDeletion
@@ -247,7 +247,8 @@ func (c *DPFMAPICaller) Item(
 		InternalCapacityQuantity,InternalCapacityQuantityUnit,NetAmount,TaxAmount,GrossAmount,InvoiceDocumentDate,
 		ProductionPlantBusinessPartner,ProductionPlant,ProductionPlantTimeZone,ProductionPlantStorageLocation,
 		ProductIsBatchManagedInProductionPlant,BatchMgmtPolicyInProductionPlant,ProductionPlantBatch,
-		ProductionPlantBatchValidityStartDate,ProductionPlantBatchValidityEndDate,Incoterms,TransactionTaxClassification,
+		ProductionPlantBatchValidityStartDate,ProductionPlantBatchValidityStartTime,ProductionPlantBatchValidityEndDate,
+		ProductionPlantBatchValidityEndTime,InspectionPlan,InspectionPlant,InspectionOrder,Incoterms,TransactionTaxClassification,
 		ProductTaxClassificationBillToCountry,ProductTaxClassificationBillFromCountry,DefinedTaxClassification,AccountAssignmentGroup,
 		ProductAccountAssignmentGroup,PaymentTerms,DueCalculationBaseDate,PaymentDueDate,NetPaymentDays,PaymentMethod,Project,
 		AccountingExchangeRate,ReferenceDocument,ReferenceDocumentItem,ItemCompleteDeliveryIsDefined,ItemDeliveryStatus,IssuingStatus,
@@ -587,7 +588,7 @@ func (c *DPFMAPICaller) HeadersBySeller(
 		OrdersHeaderPartnerSeller.BusinessPartnerFullName as SellerBusinessPartnerFullName
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as OrdersHeader
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerDeliverTo
-		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVERTO"
+		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVER_TO"
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerSeller
 		ON OrdersHeader.OrderID = OrdersHeaderPartnerSeller.OrderID AND OrdersHeaderPartnerSeller.PartnerFunction = "SELLER"
 		WHERE (OrdersHeader.Seller) = (?);`, seller,
@@ -623,7 +624,7 @@ func (c *DPFMAPICaller) HeadersByBuyer(
 		OrdersHeaderPartnerBuyer.BusinessPartnerFullName as BuyerBusinessPartnerFullName
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as OrdersHeader
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerDeliverTo
-		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVERTO"
+		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVER_TO"
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerBuyer
 		ON OrdersHeader.OrderID = OrdersHeaderPartnerBuyer.OrderID AND OrdersHeaderPartnerBuyer.PartnerFunction = "BUYER"
 		WHERE (OrdersHeader.Buyer) = (?);`, buyer,

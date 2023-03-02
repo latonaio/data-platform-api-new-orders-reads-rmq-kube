@@ -19,10 +19,13 @@ type Item struct {
 	PricingDate                                   *string  `json:"PricingDate"`
 	PriceDetnExchangeRate                         *float32 `json:"PriceDetnExchangeRate"`
 	RequestedDeliveryDate                         *string  `json:"RequestedDeliveryDate"`
+	RequestedDeliveryTime                         *string  `json:"RequestedDeliveryTime"`
 	DeliverToParty                                *int     `json:"DeliverToParty"`
 	DeliverFromParty                              *int     `json:"DeliverFromParty"`
 	CreationDate                                  *string  `json:"CreationDate"`
+	CreationTime                                  *string  `json:"CreationTime"`
 	LastChangeDate                                *string  `json:"LastChangeDate"`
+	LastChangeTime                                *string  `json:"LastChangeTime"`
 	DeliverToPlant                                *string  `json:"DeliverToPlant"`
 	DeliverToPlantTimeZone                        *string  `json:"DeliverToPlantTimeZone"`
 	DeliverToPlantStorageLocation                 *string  `json:"DeliverToPlantStorageLocation"`
@@ -82,6 +85,9 @@ type Item struct {
 	ProductionPlantBatchValidityStartTime         *string  `json:"ProductionPlantBatchValidityStartTime"`
 	ProductionPlantBatchValidityEndDate           *string  `json:"ProductionPlantBatchValidityEndDate"`
 	ProductionPlantBatchValidityEndTime           *string  `json:"ProductionPlantBatchValidityEndTime"`
+	InspectionPlan								  *int     `json:"InspectionPlan"`
+	InspectionPlant								  *int     `json:"InspectionPlant"`
+	InspectionOrder								  *int     `json:"InspectionOrder"`
 	Incoterms                                     *string  `json:"Incoterms"`
 	TransactionTaxClassification                  *string  `json:"TransactionTaxClassification"`
 	ProductTaxClassificationBillToCountry         *string  `json:"ProductTaxClassificationBillToCountry"`

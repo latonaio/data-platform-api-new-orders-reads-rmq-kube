@@ -32,6 +32,7 @@ type Header struct {
 	PricingDate                      *string  `json:"PricingDate"`
 	PriceDetnExchangeRate            *float32 `json:"PriceDetnExchangeRate"`
 	RequestedDeliveryDate            *string  `json:"RequestedDeliveryDate"`
+	RequestedDeliveryTime            *string  `json:"RequestedDeliveryTime"`
 	HeaderCompleteDeliveryIsDefined  *bool    `json:"HeaderCompleteDeliveryIsDefined"`
 	Incoterms                        *string  `json:"Incoterms"`
 	PaymentTerms                     *string  `json:"PaymentTerms"`
@@ -46,6 +47,6 @@ type Header struct {
 	HeaderBlockStatus                *bool    `json:"HeaderBlockStatus"`
 	HeaderDeliveryBlockStatus        *bool    `json:"HeaderDeliveryBlockStatus"`
 	HeaderBillingBlockStatus         *bool    `json:"HeaderBillingBlockStatus"`
-	IsCancelled                		 *bool    `json:"IsCancelled"`
+	IsCancelled                      *bool    `json:"IsCancelled"`
 	IsMarkedForDeletion              *bool    `json:"IsMarkedForDeletion"`
 }
