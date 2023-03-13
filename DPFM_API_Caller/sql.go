@@ -61,6 +61,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				itemScheduleLine = c.ItemScheduleLine(mtx, input, output, errs, log)
 			}()
+		case "ItemScheduleLines":
+			func() {
+				itemScheduleLine = c.ItemScheduleLines(mtx, input, output, errs, log)
+			}()
 		case "Address":
 			func() {
 				address = c.Address(mtx, input, output, errs, log)
@@ -231,29 +235,31 @@ func (c *DPFMAPICaller) Item(
 	repeat := strings.Repeat("(?,?),", cnt-1) + "(?,?)"
 	rows, err := c.db.Query(
 		`SELECT 
-		OrderID,OrderItem,OrderItemCategory,SupplyChainRelationshipID,SupplyChainRelationshipDeliveryID,
-		SupplyChainRelationshipDeliveryPlantID,SupplyChainRelationshipStockConfPlantID,SupplyChainRelationshipProductionPlantID,
-		OrderItemText,OrderItemTextByBuyer,OrderItemTextBySeller,Product,ProductStandardID,ProductGroup,BaseUnit,
-		PricingDate,PriceDetnExchangeRate,RequestedDeliveryDate,DeliverToParty,DeliverFromParty,CreationDate,
-		LastChangeDate,DeliverToPlant,DeliverToPlantTimeZone,DeliverToPlantStorageLocation,ProductIsBatchManagedInDeliverToPlant,
-		BatchMgmtPolicyInDeliverToPlant,DeliverToPlantBatch,DeliverToPlantBatchValidityStartDate,DeliverToPlantBatchValidityEndDate,
-		DeliverFromPlant,DeliverFromPlantTimeZone,DeliverFromPlantStorageLocation,ProductIsBatchManagedInDeliverFromPlant,
-		BatchMgmtPolicyInDeliverFromPlant,DeliverFromPlantBatch,DeliverFromPlantBatchValidityStartDate,
-		DeliverFromPlantBatchValidityEndDate,DeliveryUnit,StockConfirmationBusinessPartner,StockConfirmationPlant,
-		StockConfirmationPlantTimeZone,ProductIsBatchManagedInStockConfirmationPlant,
-		StockConfirmationPlantBatch,StockConfirmationPlantBatchValidityStartDate,StockConfirmationPlantBatchValidityEndDate,
-		ServicesRenderingDate,OrderQuantityInBaseUnit,OrderQuantityInDeliveryUnit,StockConfirmationPolicy,StockConfirmationStatus,
-		ConfirmedOrderQuantityInBaseUnit,ItemWeightUnit,ProductGrossWeight,ItemGrossWeight,ProductNetWeight,ItemNetWeight,
-		InternalCapacityQuantity,InternalCapacityQuantityUnit,NetAmount,TaxAmount,GrossAmount,InvoiceDocumentDate,
-		ProductionPlantBusinessPartner,ProductionPlant,ProductionPlantTimeZone,ProductionPlantStorageLocation,
-		ProductIsBatchManagedInProductionPlant,BatchMgmtPolicyInProductionPlant,ProductionPlantBatch,
-		ProductionPlantBatchValidityStartDate,ProductionPlantBatchValidityStartTime,ProductionPlantBatchValidityEndDate,
-		ProductionPlantBatchValidityEndTime,InspectionPlan,InspectionPlant,InspectionOrder,Incoterms,TransactionTaxClassification,
-		ProductTaxClassificationBillToCountry,ProductTaxClassificationBillFromCountry,DefinedTaxClassification,AccountAssignmentGroup,
-		ProductAccountAssignmentGroup,PaymentTerms,DueCalculationBaseDate,PaymentDueDate,NetPaymentDays,PaymentMethod,Project,
-		AccountingExchangeRate,ReferenceDocument,ReferenceDocumentItem,ItemCompleteDeliveryIsDefined,ItemDeliveryStatus,IssuingStatus,
-		ReceivingStatus,ItemBillingStatus,TaxCode,TaxRate,CountryOfOrigin,CountryOfOriginLanguage,ItemBlockStatus,
-		ItemDeliveryBlockStatus,ItemBillingBlockStatus,IsCancelled,IsMarkedForDeletion
+		OrderID, OrderItem, OrderItemCategory, SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID,
+		SupplyChainRelationshipDeliveryPlantID, SupplyChainRelationshipStockConfPlantID, SupplyChainRelationshipProductionPlantID, 
+		OrderItemText, OrderItemTextByBuyer, OrderItemTextBySeller, Product, ProductStandardID, ProductGroup, BaseUnit, PricingDate, 
+		PriceDetnExchangeRate, RequestedDeliveryDate, RequestedDeliveryTime, DeliverToParty, DeliverFromParty, CreationDate, CreationTime, 
+		LastChangeDate, LastChangeTime, DeliverToPlant, DeliverToPlantTimeZone, DeliverToPlantStorageLocation, ProductIsBatchManagedInDeliverToPlant, 
+		BatchMgmtPolicyInDeliverToPlant, DeliverToPlantBatch, DeliverToPlantBatchValidityStartDate, DeliverToPlantBatchValidityStartTime,
+		DeliverToPlantBatchValidityEndDate, DeliverToPlantBatchValidityEndTime, DeliverFromPlant, DeliverFromPlantTimeZone, 
+		DeliverFromPlantStorageLocation, ProductIsBatchManagedInDeliverFromPlant, BatchMgmtPolicyInDeliverFromPlant, 
+		DeliverFromPlantBatch, DeliverFromPlantBatchValidityStartDate, DeliverFromPlantBatchValidityStartTime, DeliverFromPlantBatchValidityEndDate,
+		DeliverFromPlantBatchValidityEndTime, DeliveryUnit, StockConfirmationBusinessPartner, StockConfirmationPlant, 
+		StockConfirmationPlantTimeZone, ProductIsBatchManagedInStockConfirmationPlant, BatchMgmtPolicyInStockConfirmationPlant, 
+		StockConfirmationPlantBatch, StockConfirmationPlantBatchValidityStartDate, StockConfirmationPlantBatchValidityStartTime, 
+		StockConfirmationPlantBatchValidityEndDate, StockConfirmationPlantBatchValidityEndTime, ServicesRenderingDate, 
+		OrderQuantityInBaseUnit, OrderQuantityInDeliveryUnit, StockConfirmationPolicy, StockConfirmationStatus, 
+		ConfirmedOrderQuantityInBaseUnit, ItemWeightUnit, ProductGrossWeight, ItemGrossWeight, ProductNetWeight, ItemNetWeight,
+		InternalCapacityQuantity, InternalCapacityQuantityUnit, NetAmount, TaxAmount, GrossAmount, InvoiceDocumentDate,
+		ProductionPlantBusinessPartner, ProductionPlant, ProductionPlantTimeZone, ProductionPlantStorageLocation, 
+		ProductIsBatchManagedInProductionPlant, BatchMgmtPolicyInProductionPlant, ProductionPlantBatch, ProductionPlantBatchValidityStartDate, 
+		ProductionPlantBatchValidityStartTime, ProductionPlantBatchValidityEndDate, ProductionPlantBatchValidityEndTime,
+		Incoterms, TransactionTaxClassification, ProductTaxClassificationBillToCountry, ProductTaxClassificationBillFromCountry, 
+		DefinedTaxClassification, AccountAssignmentGroup, ProductAccountAssignmentGroup, PaymentTerms, DueCalculationBaseDate,
+		PaymentDueDate, NetPaymentDays, PaymentMethod, Project, AccountingExchangeRate, ReferenceDocument, ReferenceDocumentItem,
+		ItemCompleteDeliveryIsDefined, ItemDeliveryStatus, IssuingStatus, ReceivingStatus, ItemBillingStatus, TaxCode, TaxRate, 
+		CountryOfOrigin, CountryOfOriginLanguage, ItemBlockStatus, ItemDeliveryBlockStatus, ItemBillingBlockStatus, IsCancelled,
+		IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data
 		WHERE (OrderID, OrderItem) IN ( `+repeat+` );`, args...,
 	)
@@ -442,6 +448,38 @@ func (c *DPFMAPICaller) ItemScheduleLine(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_schedule_line_data
 		WHERE (OrderID, OrderItem, ScheduleLine) IN ( `+repeat+` );`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToItemScheduleLine(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) ItemScheduleLines(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.ItemScheduleLine {
+	orderID := input.Header.OrderID
+	item := input.Header.Item[0]
+
+	where := fmt.Sprintf("WHERE (OrderID, OrderItem) IN ( (%d, %d) ) ", orderID, item.OrderItem)
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_schedule_line_data
+		` + where + `;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
