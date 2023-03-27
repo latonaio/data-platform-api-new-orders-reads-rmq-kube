@@ -11,6 +11,7 @@
     "message": {
         "Header": null,
         "Item": null,
+        "Items": null,
         "ItemPricingElement": null,
         "ItemScheduleLine": null,
         "Address": null,
@@ -18,45 +19,33 @@
         "HeaderDoc": null,
         "HeadersBySeller": [
             {
-                "OrderID": 1,
+                "OrderID": 4,
                 "HeaderDeliveryStatus": "NP",
                 "DeliverToBusinessPartnerFullName": null,
                 "SellerBusinessPartnerFullName": null
             },
             {
-                "OrderID": 5,
-                "HeaderDeliveryStatus": "NP",
-                "DeliverToBusinessPartnerFullName": null,
-                "SellerBusinessPartnerFullName": null
-            },
-            {
-                "OrderID": 13,
+                "OrderID": 14,
                 "HeaderDeliveryStatus": "NP",
                 "DeliverToBusinessPartnerFullName": "株式会社ローソン虎ノ門店",
-                "SellerBusinessPartnerFullName": "山崎製パン株式会社"
+                "SellerBusinessPartnerFullName": "株式会社ニチレイフーズ"
             },
             {
-                "OrderID": 15,
-                "HeaderDeliveryStatus": "CL",
-                "DeliverToBusinessPartnerFullName": "株式会社ローソン虎ノ門店",
-                "SellerBusinessPartnerFullName": "山崎製パン株式会社"
-            },
-            {
-                "OrderID": 16,
+                "OrderID": 18,
                 "HeaderDeliveryStatus": "NP",
                 "DeliverToBusinessPartnerFullName": "株式会社ローソン虎ノ門店",
-                "SellerBusinessPartnerFullName": "山崎製パン株式会社"
+                "SellerBusinessPartnerFullName": "株式会社ニチレイフーズ"
             },
             {
-                "OrderID": 17,
+                "OrderID": 127,
                 "HeaderDeliveryStatus": "NP",
                 "DeliverToBusinessPartnerFullName": "株式会社ローソン虎ノ門店",
-                "SellerBusinessPartnerFullName": "山崎製パン株式会社"
+                "SellerBusinessPartnerFullName": "株式会社ニチレイフーズ"
             }
         ],
         "HeadersByBuyer": null
     },
-    "api_schema": "DPFMOrdersCreates",
+    "api_schema": "DPFMOrdersReads",
     "accepter": [
         "HeadersBySeller"
     ],

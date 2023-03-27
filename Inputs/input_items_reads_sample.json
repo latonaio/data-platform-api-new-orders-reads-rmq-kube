@@ -12,14 +12,14 @@
 		"ReferenceDocumentItem": null
 	},
 	"Orders": {
-		"OrderID": null,
+		"OrderID": 35,
 		"OrderDate": null,
 		"OrderType": "",
 		"SupplyChainRelationshipID": null,
 		"SupplyChainRelationshipBillingID": null,
 		"SupplyChainRelationshipPaymentID": null,
-		"Buyer": null,
-		"Seller": 701,
+		"Buyer": 101,
+		"Seller": 201,
 		"BillToParty": null,
 		"BillFromParty": null,
 		"BillToCountry": "",
@@ -36,7 +36,7 @@
 		"TotalNetAmount": null,
 		"TotalTaxAmount": null,
 		"TotalGrossAmount": null,
-		"HeaderDeliveryStatus": "NP",
+		"HeaderDeliveryStatus": "",
 		"HeaderBillingStatus": "",
 		"HeaderDocReferenceStatus": "",
 		"TransactionCurrency": "",
@@ -44,7 +44,7 @@
 		"PriceDetnExchangeRate": null,
 		"RequestedDeliveryDate": null,
 		"RequestedDeliveryTime": null,
-		"HeaderCompleteDeliveryIsDefined": false,
+		"HeaderCompleteDeliveryIsDefined": null,
 		"Incoterms": "",
 		"PaymentTerms": "",
 		"PaymentMethod": "",
@@ -56,9 +56,9 @@
 		"IsExportImport": null,
 		"HeaderText": "",
 		"HeaderBlockStatus": null,
-		"HeaderDeliveryBlockStatus": false,
+		"HeaderDeliveryBlockStatus": null,
 		"HeaderBillingBlockStatus": null,
-		"IsCancelled": false,
+		"IsCancelled": null,
 		"IsMarkedForDeletion": false,
 		"HeaderDoc": [
 			{
@@ -87,7 +87,7 @@
 		],
 		"Item": [
 			{
-				"OrderItem": null,
+				"OrderItem": 1,
 				"OrderItemCategory": "",
 				"SupplyChainRelationshipID": null,
 				"SupplyChainRelationshipDeliveryID": null,
@@ -189,8 +189,8 @@
 				"AccountingExchangeRate": null,
 				"ReferenceDocument": null,
 				"ReferenceDocumentItem": null,
-				"ItemCompleteDeliveryIsDefined": null,
-				"ItemDeliveryStatus": "",
+				"ItemCompleteDeliveryIsDefined": false,
+				"ItemDeliveryStatus": "NP",
 				"IssuingStatus": "",
 				"ReceivingStatus": "",
 				"ItemBillingStatus": "",
@@ -199,10 +199,10 @@
 				"CountryOfOrigin": "",
 				"CountryOfOriginLanguage": "",
 				"ItemBlockStatus": null,
-				"ItemDeliveryBlockStatus": null,
+				"ItemDeliveryBlockStatus": false,
 				"ItemBillingBlockStatus": null,
-				"IsCancelled": null,
-				"IsMarkedForDeletion": null,
+				"IsCancelled": false,
+				"IsMarkedForDeletion": false,
 				"ItemPricingElement": [
 					{
 						"SupplyChainRelationshipID": null,
@@ -254,7 +254,7 @@
 				]
 			},
 			{
-				"OrderItem": null,
+				"OrderItem": 2,
 				"OrderItemCategory": "",
 				"SupplyChainRelationshipID": null,
 				"SupplyChainRelationshipDeliveryID": null,
@@ -356,8 +356,8 @@
 				"AccountingExchangeRate": null,
 				"ReferenceDocument": null,
 				"ReferenceDocumentItem": null,
-				"ItemCompleteDeliveryIsDefined": null,
-				"ItemDeliveryStatus": "",
+				"ItemCompleteDeliveryIsDefined": false,
+				"ItemDeliveryStatus": "NP",
 				"IssuingStatus": "",
 				"ReceivingStatus": "",
 				"ItemBillingStatus": "",
@@ -366,14 +366,14 @@
 				"CountryOfOrigin": "",
 				"CountryOfOriginLanguage": "",
 				"ItemBlockStatus": null,
-				"ItemDeliveryBlockStatus": null,
+				"ItemDeliveryBlockStatus": false,
 				"ItemBillingBlockStatus": null,
-				"IsCancelled": null,
-				"IsMarkedForDeletion": null,
+				"IsCancelled": false,
+				"IsMarkedForDeletion": false,
 				"ItemPricingElement": [
 					{
 						"SupplyChainRelationshipID": null,
-						"Buyer":  null,
+						"Buyer": null,
 						"Seller": null,
 						"PricingProcedureCounter": null,
 						"ConditionRecord": null,
@@ -450,7 +450,7 @@
 	},
 	"api_schema": "DPFMOrdersReads",
 	"accepter": [
-		"HeadersBySeller"
+		"Items"
 	],
 	"deleted": false
 }

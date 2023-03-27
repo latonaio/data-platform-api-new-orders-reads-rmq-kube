@@ -12,14 +12,14 @@
 		"ReferenceDocumentItem": null
 	},
 	"Orders": {
-		"OrderID": null,
+		"OrderID": 17,
 		"OrderDate": null,
 		"OrderType": "",
 		"SupplyChainRelationshipID": null,
 		"SupplyChainRelationshipBillingID": null,
 		"SupplyChainRelationshipPaymentID": null,
 		"Buyer": null,
-		"Seller": 701,
+		"Seller": null,
 		"BillToParty": null,
 		"BillFromParty": null,
 		"BillToCountry": "",
@@ -36,7 +36,7 @@
 		"TotalNetAmount": null,
 		"TotalTaxAmount": null,
 		"TotalGrossAmount": null,
-		"HeaderDeliveryStatus": "NP",
+		"HeaderDeliveryStatus": "",
 		"HeaderBillingStatus": "",
 		"HeaderDocReferenceStatus": "",
 		"TransactionCurrency": "",
@@ -44,7 +44,7 @@
 		"PriceDetnExchangeRate": null,
 		"RequestedDeliveryDate": null,
 		"RequestedDeliveryTime": null,
-		"HeaderCompleteDeliveryIsDefined": false,
+		"HeaderCompleteDeliveryIsDefined": null,
 		"Incoterms": "",
 		"PaymentTerms": "",
 		"PaymentMethod": "",
@@ -56,10 +56,10 @@
 		"IsExportImport": null,
 		"HeaderText": "",
 		"HeaderBlockStatus": null,
-		"HeaderDeliveryBlockStatus": false,
+		"HeaderDeliveryBlockStatus": null,
 		"HeaderBillingBlockStatus": null,
-		"IsCancelled": false,
-		"IsMarkedForDeletion": false,
+		"IsCancelled": null,
+		"IsMarkedForDeletion": null,
 		"HeaderDoc": [
 			{
 				"DocType": "",
@@ -87,7 +87,7 @@
 		],
 		"Item": [
 			{
-				"OrderItem": null,
+				"OrderItem": 1,
 				"OrderItemCategory": "",
 				"SupplyChainRelationshipID": null,
 				"SupplyChainRelationshipDeliveryID": null,
@@ -254,7 +254,7 @@
 				]
 			},
 			{
-				"OrderItem": null,
+				"OrderItem": 2,
 				"OrderItemCategory": "",
 				"SupplyChainRelationshipID": null,
 				"SupplyChainRelationshipDeliveryID": null,
@@ -373,7 +373,7 @@
 				"ItemPricingElement": [
 					{
 						"SupplyChainRelationshipID": null,
-						"Buyer":  null,
+						"Buyer": null,
 						"Seller": null,
 						"PricingProcedureCounter": null,
 						"ConditionRecord": null,
@@ -450,7 +450,7 @@
 	},
 	"api_schema": "DPFMOrdersReads",
 	"accepter": [
-		"HeadersBySeller"
+		"ItemPricingElement"
 	],
 	"deleted": false
 }

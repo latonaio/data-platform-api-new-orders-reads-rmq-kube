@@ -12,14 +12,14 @@
 		"ReferenceDocumentItem": null
 	},
 	"Orders": {
-		"OrderID": null,
+		"OrderID": 17,
 		"OrderDate": null,
 		"OrderType": "",
 		"SupplyChainRelationshipID": null,
 		"SupplyChainRelationshipBillingID": null,
 		"SupplyChainRelationshipPaymentID": null,
 		"Buyer": null,
-		"Seller": 701,
+		"Seller": null,
 		"BillToParty": null,
 		"BillFromParty": null,
 		"BillToCountry": "",
@@ -36,7 +36,7 @@
 		"TotalNetAmount": null,
 		"TotalTaxAmount": null,
 		"TotalGrossAmount": null,
-		"HeaderDeliveryStatus": "NP",
+		"HeaderDeliveryStatus": "",
 		"HeaderBillingStatus": "",
 		"HeaderDocReferenceStatus": "",
 		"TransactionCurrency": "",
@@ -44,7 +44,7 @@
 		"PriceDetnExchangeRate": null,
 		"RequestedDeliveryDate": null,
 		"RequestedDeliveryTime": null,
-		"HeaderCompleteDeliveryIsDefined": false,
+		"HeaderCompleteDeliveryIsDefined": null,
 		"Incoterms": "",
 		"PaymentTerms": "",
 		"PaymentMethod": "",
@@ -56,9 +56,9 @@
 		"IsExportImport": null,
 		"HeaderText": "",
 		"HeaderBlockStatus": null,
-		"HeaderDeliveryBlockStatus": false,
+		"HeaderDeliveryBlockStatus": null,
 		"HeaderBillingBlockStatus": null,
-		"IsCancelled": false,
+		"IsCancelled": null,
 		"IsMarkedForDeletion": false,
 		"HeaderDoc": [
 			{
@@ -73,7 +73,19 @@
 		],
 		"Address": [
 			{
-				"AddressID": null,
+				"AddressID": 700010001,
+				"PostalCode": "",
+				"LocalRegion": "",
+				"Country": "",
+				"District": "",
+				"StreetName": "",
+				"CityName": "",
+				"Building": "",
+				"Floor": null,
+				"Room": null
+			},
+			{
+				"AddressID": 700010002,
 				"PostalCode": "",
 				"LocalRegion": "",
 				"Country": "",
@@ -202,7 +214,7 @@
 				"ItemDeliveryBlockStatus": null,
 				"ItemBillingBlockStatus": null,
 				"IsCancelled": null,
-				"IsMarkedForDeletion": null,
+				"IsMarkedForDeletion": false,
 				"ItemPricingElement": [
 					{
 						"SupplyChainRelationshipID": null,
@@ -373,7 +385,7 @@
 				"ItemPricingElement": [
 					{
 						"SupplyChainRelationshipID": null,
-						"Buyer":  null,
+						"Buyer": null,
 						"Seller": null,
 						"PricingProcedureCounter": null,
 						"ConditionRecord": null,
@@ -450,7 +462,7 @@
 	},
 	"api_schema": "DPFMOrdersReads",
 	"accepter": [
-		"HeadersBySeller"
+		"Address"
 	],
 	"deleted": false
 }

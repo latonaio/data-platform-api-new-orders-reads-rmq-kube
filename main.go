@@ -82,7 +82,7 @@ func callProcess(rmq *rabbitmq.RabbitmqClient, caller *dpfm_api_caller.DPFMAPICa
 		return
 	}
 	accepter := getAccepter(&input)
-	res, errs := caller.AsyncNewOrdersReads(accepter, &input, &output, l)
+	res, errs := caller.AsyncOrdersReads(accepter, &input, &output, l)
 	if len(errs) != 0 {
 		for _, err := range errs {
 			l.Error(err)

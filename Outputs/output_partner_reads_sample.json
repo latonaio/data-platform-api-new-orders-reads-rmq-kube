@@ -1,0 +1,63 @@
+{
+    "connection_key": "request",
+    "result": true,
+    "redis_key": "abcdefg",
+    "filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+    "api_status_code": 200,
+    "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+    "business_partner": 201,
+    "service_label": "ORDERS",
+    "api_type": "",
+    "message": {
+        "Header": null,
+        "Item": null,
+        "Items": null,
+        "ItemPricingElement": null,
+        "ItemScheduleLine": null,
+        "Address": null,
+        "Partner": [
+            {
+                "OrderID": 17,
+                "PartnerFunction": "BUYER",
+                "BusinessPartner": 101,
+                "BusinessPartnerFullName": "株式会社ローソン本社",
+                "BusinessPartnerName": "ローソン本社",
+                "Organization": null,
+                "Country": "JP",
+                "Language": "JA",
+                "Currency": "JPY",
+                "ExternalDocumentID": null,
+                "AddressID": 700010001
+            },
+            {
+                "OrderID": 17,
+                "PartnerFunction": "SELLER",
+                "BusinessPartner": 201,
+                "BusinessPartnerFullName": "山崎製パン株式会社",
+                "BusinessPartnerName": "山崎パン",
+                "Organization": null,
+                "Country": "JP",
+                "Language": "JA",
+                "Currency": "JPY",
+                "ExternalDocumentID": null,
+                "AddressID": 700020001
+            }
+        ],
+        "HeaderDoc": null,
+        "HeadersBySeller": null,
+        "HeadersByBuyer": null
+    },
+    "api_schema": "DPFMOrdersReads",
+    "accepter": [
+        "Partner"
+    ],
+    "deleted": false,
+    "sql_update_result": null,
+    "sql_update_error": "",
+    "subfunc_result": null,
+    "subfunc_error": "",
+    "exconf_result": null,
+    "exconf_error": "",
+    "api_processing_result": true,
+    "api_processing_error": ""
+}

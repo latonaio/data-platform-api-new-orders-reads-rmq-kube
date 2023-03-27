@@ -22,6 +22,7 @@ func (c *DPFMAPICaller) readSqlProcess(
 ) interface{} {
 	var header *[]dpfm_api_output_formatter.Header
 	var item *[]dpfm_api_output_formatter.Item
+	// var items *[]dpfm_api_output_formatter.Items
 	var itemPricingElement *[]dpfm_api_output_formatter.ItemPricingElement
 	var itemScheduleLine *[]dpfm_api_output_formatter.ItemScheduleLine
 	var address *[]dpfm_api_output_formatter.Address
@@ -125,7 +126,7 @@ func (c *DPFMAPICaller) Header(
 		OrderValidityEndDate,header.InvoicePeriodStartDate,header.InvoicePeriodEndDate,header.TotalNetAmount,header.TotalTaxAmount,header.
 		TotalGrossAmount,header.HeaderDeliveryStatus,header.HeaderBillingStatus,header.HeaderDocReferenceStatus,header.
 		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.RequestedDeliveryTime,header.HeaderCompleteDeliveryIsDefined,header.
-		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
+		Incoterms,terms.PaymentTerms,terms.PaymentTermsName,method.PaymentMethod,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
 		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
 		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.IsCancelled,header.IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
@@ -191,7 +192,7 @@ func (c *DPFMAPICaller) Headers(
 		OrderValidityEndDate,header.InvoicePeriodStartDate,header.InvoicePeriodEndDate,header.TotalNetAmount,header.TotalTaxAmount,header.
 		TotalGrossAmount,header.HeaderDeliveryStatus,header.HeaderBillingStatus,header.HeaderDocReferenceStatus,header.
 		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.RequestedDeliveryDate,header.HeaderCompleteDeliveryIsDefined,header.
-		Incoterms,terms.PaymentTermsName,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
+		Incoterms,terms.PaymentTerms,terms.PaymentTermsName,method.PaymentMethod,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
 		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
 		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.IsCancelled,header.IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
@@ -248,12 +249,12 @@ func (c *DPFMAPICaller) Item(
 		StockConfirmationPlantTimeZone, ProductIsBatchManagedInStockConfirmationPlant, BatchMgmtPolicyInStockConfirmationPlant, 
 		StockConfirmationPlantBatch, StockConfirmationPlantBatchValidityStartDate, StockConfirmationPlantBatchValidityStartTime, 
 		StockConfirmationPlantBatchValidityEndDate, StockConfirmationPlantBatchValidityEndTime, ServicesRenderingDate, 
-		OrderQuantityInBaseUnit, OrderQuantityInDeliveryUnit, StockConfirmationPolicy, StockConfirmationStatus, 
+		OrderQuantityInBaseUnit, OrderQuantityInDeliveryUnit, QuantityPerPackage, StockConfirmationPolicy, StockConfirmationStatus, 
 		ConfirmedOrderQuantityInBaseUnit, ItemWeightUnit, ProductGrossWeight, ItemGrossWeight, ProductNetWeight, ItemNetWeight,
 		InternalCapacityQuantity, InternalCapacityQuantityUnit, NetAmount, TaxAmount, GrossAmount, InvoiceDocumentDate,
 		ProductionPlantBusinessPartner, ProductionPlant, ProductionPlantTimeZone, ProductionPlantStorageLocation, 
 		ProductIsBatchManagedInProductionPlant, BatchMgmtPolicyInProductionPlant, ProductionPlantBatch, ProductionPlantBatchValidityStartDate, 
-		ProductionPlantBatchValidityStartTime, ProductionPlantBatchValidityEndDate, ProductionPlantBatchValidityEndTime,
+		ProductionPlantBatchValidityStartTime, ProductionPlantBatchValidityEndDate, ProductionPlantBatchValidityEndTime, InspectionPlan, InspectionPlant, InspectionOrder, 
 		Incoterms, TransactionTaxClassification, ProductTaxClassificationBillToCountry, ProductTaxClassificationBillFromCountry, 
 		DefinedTaxClassification, AccountAssignmentGroup, ProductAccountAssignmentGroup, PaymentTerms, DueCalculationBaseDate,
 		PaymentDueDate, NetPaymentDays, PaymentMethod, Project, AccountingExchangeRate, ReferenceDocument, ReferenceDocumentItem,

@@ -1,0 +1,63 @@
+{
+    "connection_key": "request",
+    "result": true,
+    "redis_key": "abcdefg",
+    "filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+    "api_status_code": 200,
+    "runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+    "business_partner": 201,
+    "service_label": "ORDERS",
+    "api_type": "",
+    "message": {
+        "Header": null,
+        "Item": null,
+        "Items": null,
+        "ItemPricingElement": null,
+        "ItemScheduleLine": null,
+        "Address": [
+            {
+                "OrderID": 17,
+                "AddressID": 700010001,
+                "PostalCode": "141-8643",
+                "LocalRegion": "13",
+                "Country": "JA",
+                "District": null,
+                "StreetName": "Osaki",
+                "CityName": "Shinagawa",
+                "Building": null,
+                "Floor": null,
+                "Room": null
+            },
+            {
+                "OrderID": 17,
+                "AddressID": 700010002,
+                "PostalCode": "105-0001",
+                "LocalRegion": "13",
+                "Country": "JA",
+                "District": null,
+                "StreetName": "Shintora",
+                "CityName": "Minato",
+                "Building": null,
+                "Floor": null,
+                "Room": null
+            }
+        ],
+        "Partner": null,
+        "HeaderDoc": null,
+        "HeadersBySeller": null,
+        "HeadersByBuyer": null
+    },
+    "api_schema": "DPFMOrdersReads",
+    "accepter": [
+        "Address"
+    ],
+    "deleted": false,
+    "sql_update_result": null,
+    "sql_update_error": "",
+    "subfunc_result": null,
+    "subfunc_error": "",
+    "exconf_result": null,
+    "exconf_error": "",
+    "api_processing_result": true,
+    "api_processing_error": ""
+}

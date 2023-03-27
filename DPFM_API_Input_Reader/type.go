@@ -190,6 +190,7 @@ type Item struct {
 	ServicesRenderingDate                         *string              `json:"ServicesRenderingDate"`
 	OrderQuantityInBaseUnit                       *float32             `json:"OrderQuantityInBaseUnit"`
 	OrderQuantityInDeliveryUnit                   *float32             `json:"OrderQuantityInDeliveryUnit"`
+	QuantityPerPackage                            *float32             `json:"QuantityPerPackage"`
 	StockConfirmationPolicy                       *string              `json:"StockConfirmationPolicy"`
 	StockConfirmationStatus                       *string              `json:"StockConfirmationStatus"`
 	ConfirmedOrderQuantityInBaseUnit              *float32             `json:"ConfirmedOrderQuantityInBaseUnit"`
@@ -215,9 +216,9 @@ type Item struct {
 	ProductionPlantBatchValidityStartTime         *string              `json:"ProductionPlantBatchValidityStartTime"`
 	ProductionPlantBatchValidityEndDate           *string              `json:"ProductionPlantBatchValidityEndDate"`
 	ProductionPlantBatchValidityEndTime           *string              `json:"ProductionPlantBatchValidityEndTime"`
-	InspectionPlan								  *int                 `json:"InspectionPlan"`
-	InspectionPlant								  *int                 `json:"InspectionPlant"`
-	InspectionOrder								  *int                 `json:"InspectionOrder"`
+	InspectionPlan                                *int                 `json:"InspectionPlan"`
+	InspectionPlant                               *string              `json:"InspectionPlant"`
+	InspectionOrder                               *int                 `json:"InspectionOrder"`
 	Incoterms                                     *string              `json:"Incoterms"`
 	TransactionTaxClassification                  *string              `json:"TransactionTaxClassification"`
 	ProductTaxClassificationBillToCountry         *string              `json:"ProductTaxClassificationBillToCountry"`

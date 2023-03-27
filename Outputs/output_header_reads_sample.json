@@ -62,6 +62,7 @@
             }
         ],
         "Item": null,
+        "Items": null,
         "ItemPricingElement": null,
         "ItemScheduleLine": null,
         "Address": null,

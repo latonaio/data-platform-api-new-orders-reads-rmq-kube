@@ -51,7 +51,9 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			&pm.HeaderCompleteDeliveryIsDefined,
 			&pm.Incoterms,
 			&pm.PaymentTerms,
+			&pm.PaymentTermsName,
 			&pm.PaymentMethod,
+			&pm.PaymentMethodName,
 			&pm.ReferenceDocument,
 			&pm.ReferenceDocumentItem,
 			&pm.AccountAssignmentGroup,
@@ -107,7 +109,9 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			HeaderCompleteDeliveryIsDefined:  data.HeaderCompleteDeliveryIsDefined,
 			Incoterms:                        data.Incoterms,
 			PaymentTerms:                     data.PaymentTerms,
+			PaymentTermsName:                 data.PaymentTermsName,
 			PaymentMethod:                    data.PaymentMethod,
+			PaymentMethodName:                data.PaymentMethodName,
 			ReferenceDocument:                data.ReferenceDocument,
 			ReferenceDocumentItem:            data.ReferenceDocumentItem,
 			AccountAssignmentGroup:           data.AccountAssignmentGroup,
@@ -343,6 +347,7 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			&pm.ServicesRenderingDate,
 			&pm.OrderQuantityInBaseUnit,
 			&pm.OrderQuantityInDeliveryUnit,
+			&pm.QuantityPerPackage,
 			&pm.StockConfirmationPolicy,
 			&pm.StockConfirmationStatus,
 			&pm.ConfirmedOrderQuantityInBaseUnit,
@@ -368,6 +373,9 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			&pm.ProductionPlantBatchValidityStartTime,
 			&pm.ProductionPlantBatchValidityEndDate,
 			&pm.ProductionPlantBatchValidityEndTime,
+			&pm.InspectionPlan,
+			&pm.InspectionPlant,
+			&pm.InspectionOrder,
 			&pm.Incoterms,
 			&pm.TransactionTaxClassification,
 			&pm.ProductTaxClassificationBillToCountry,
@@ -406,7 +414,6 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 
 		data := pm
 		item = append(item, Item{
-
 			OrderID:                                       data.OrderID,
 			OrderItem:                                     data.OrderItem,
 			OrderItemCategory:                             data.OrderItemCategory,
@@ -466,6 +473,7 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			ServicesRenderingDate:                         data.ServicesRenderingDate,
 			OrderQuantityInBaseUnit:                       data.OrderQuantityInBaseUnit,
 			OrderQuantityInDeliveryUnit:                   data.OrderQuantityInDeliveryUnit,
+			QuantityPerPackage:                            data.QuantityPerPackage,
 			StockConfirmationPolicy:                       data.StockConfirmationPolicy,
 			StockConfirmationStatus:                       data.StockConfirmationStatus,
 			ConfirmedOrderQuantityInBaseUnit:              data.ConfirmedOrderQuantityInBaseUnit,
@@ -491,6 +499,9 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			ProductionPlantBatchValidityStartTime:         data.ProductionPlantBatchValidityStartTime,
 			ProductionPlantBatchValidityEndDate:           data.ProductionPlantBatchValidityEndDate,
 			ProductionPlantBatchValidityEndTime:           data.ProductionPlantBatchValidityEndTime,
+			InspectionPlan:                                data.InspectionPlan,
+			InspectionPlant:                               data.InspectionPlant,
+			InspectionOrder:                               data.InspectionOrder,
 			Incoterms:                                     data.Incoterms,
 			TransactionTaxClassification:                  data.TransactionTaxClassification,
 			ProductTaxClassificationBillToCountry:         data.ProductTaxClassificationBillToCountry,
@@ -521,9 +532,6 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			ItemBillingBlockStatus:                        data.ItemBillingBlockStatus,
 			IsCancelled:                                   data.IsCancelled,
 			IsMarkedForDeletion:                           data.IsMarkedForDeletion,
-			InspectionPlan:                                data.InspectionPlan,
-			InspectionPlant:                               data.InspectionPlant,
-			InspectionOrder:                               data.InspectionOrder,
 		})
 	}
 
@@ -532,12 +540,12 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 
 func ConvertToItems(rows *sql.Rows) (*[]Item, error) {
 	defer rows.Close()
-	item := make([]Item, 0)
+	items := make([]Item, 0)
 
 	i := 0
 	for rows.Next() {
 		i++
-		pm := &requests.Item{}
+		pm := &requests.Items{}
 
 		err := rows.Scan(
 			&pm.OrderID,
@@ -560,11 +568,11 @@ func ConvertToItems(rows *sql.Rows) (*[]Item, error) {
 		)
 		if err != nil {
 			fmt.Printf("err = %+v \n", err)
-			return &item, err
+			return &items, err
 		}
 
 		data := pm
-		item = append(item, Item{
+		items = append(items, Item{
 			OrderID:                     data.OrderID,
 			OrderItem:                   data.OrderItem,
 			OrderItemCategory:           data.OrderItemCategory,
@@ -586,10 +594,10 @@ func ConvertToItems(rows *sql.Rows) (*[]Item, error) {
 	}
 	if i == 0 {
 		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &item, nil
+		return &items, nil
 	}
 
-	return &item, nil
+	return &items, nil
 }
 
 func ConvertToItemPricingElement(rows *sql.Rows) (*[]ItemPricingElement, error) {
