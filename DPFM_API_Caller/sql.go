@@ -117,7 +117,15 @@ func (c *DPFMAPICaller) Header(
 	errs *[]error,
 	log *logger.Logger,
 ) *[]dpfm_api_output_formatter.Header {
-	orderID := input.Header.OrderID
+	where := fmt.Sprintf("WHERE header.OrderID = %d ", input.Header.OrderID)
+
+	if input.Header.IsCancelled != nil {
+		where = fmt.Sprintf("%s\nAND header.IsCancelled = %v ", where, *input.Header.IsCancelled)
+	}
+	if input.Header.IsMarkedForDeletion != nil {
+		where = fmt.Sprintf("%s\nAND header.IsMarkedForDeletion = %v", where, *input.Header.IsMarkedForDeletion)
+	}
+
 	rows, err := c.db.Query(
 		`SELECT
 		header.OrderID,header.OrderDate,header.OrderType,header.SupplyChainRelationshipID,header.SupplyChainRelationshipBillingID,header.
@@ -134,7 +142,7 @@ func (c *DPFMAPICaller) Header(
 		ON header.PaymentTerms = terms.PaymentTerms
 		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_payment_method_text_data AS method
 		ON header.PaymentMethod = method.PaymentMethod
-		WHERE OrderID = ?;`, orderID,
+		` + where + ` ;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -224,16 +232,17 @@ func (c *DPFMAPICaller) Item(
 	log *logger.Logger,
 ) *[]dpfm_api_output_formatter.Item {
 	var args []interface{}
-	orderID := input.Header.OrderID
-	item := input.Header.Item
+	where := fmt.Sprintf("WHERE OrderID = %d ", input.Header.OrderID)
 
-	cnt := 0
-	for _, v := range item {
-		args = append(args, orderID, v.OrderItem)
-		cnt++
+	itemIDs := ""
+	for _, v := range input.Header.Item {
+		itemIDs = fmt.Sprintf("%s, %d", itemIDs, v.OrderItem)
 	}
 
-	repeat := strings.Repeat("(?,?),", cnt-1) + "(?,?)"
+	if len(itemIDs) != 0 {
+		where = fmt.Sprintf("%s\nAND OrderItem IN ( %s ) ", where, itemIDs[1:])
+	}
+
 	rows, err := c.db.Query(
 		`SELECT 
 		OrderID, OrderItem, OrderItemCategory, SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID,
@@ -262,7 +271,7 @@ func (c *DPFMAPICaller) Item(
 		CountryOfOrigin, CountryOfOriginLanguage, ItemBlockStatus, ItemDeliveryBlockStatus, ItemBillingBlockStatus, IsCancelled,
 		IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data
-		WHERE (OrderID, OrderItem) IN ( `+repeat+` );`, args...,
+		`+where+` );`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
