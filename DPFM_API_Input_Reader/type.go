@@ -119,7 +119,7 @@ type Header struct {
 	InvoiceDocumentDate              *string     `json:"InvoiceDocumentDate"`
 	IsExportImport                   *bool       `json:"IsExportImport"`
 	HeaderText                       *string     `json:"HeaderText"`
-	HeaderBlockStatus                *bool       `json:"HeaderBlockStatus"`
+	HeaderBlockStatus                *string     `json:"HeaderBlockStatus"`
 	HeaderDeliveryBlockStatus        *bool       `json:"HeaderDeliveryBlockStatus"`
 	HeaderBillingBlockStatus         *bool       `json:"HeaderBillingBlockStatus"`
 	IsCancelled                      *bool       `json:"IsCancelled"`

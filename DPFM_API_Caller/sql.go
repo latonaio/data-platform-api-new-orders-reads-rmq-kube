@@ -142,7 +142,7 @@ func (c *DPFMAPICaller) Header(
 		ON header.PaymentTerms = terms.PaymentTerms
 		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_payment_method_text_data AS method
 		ON header.PaymentMethod = method.PaymentMethod
-		` + where + ` ;`,
+		` + where + ` ORDER BY header.IsMarkedForDeletion ASC, header.IsCancelled ASC, header.OrderID DESC;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -208,7 +208,7 @@ func (c *DPFMAPICaller) Headers(
 		ON header.PaymentTerms = terms.PaymentTerms
 		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_payment_method_text_data AS method
 		ON header.PaymentMethod = method.PaymentMethod
-		` + where + idWhere + `;`)
+		` + where + idWhere + ` ORDER BY header.IsMarkedForDeletion ASC, header.IsCancelled ASC, header.OrderID DESC ;`)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
@@ -242,7 +242,6 @@ func (c *DPFMAPICaller) Item(
 	if len(itemIDs) != 0 {
 		where = fmt.Sprintf("%s\nAND OrderItem IN ( %s ) ", where, itemIDs[1:])
 	}
-
 	rows, err := c.db.Query(
 		`SELECT 
 		OrderID, OrderItem, OrderItemCategory, SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID,
@@ -271,7 +270,7 @@ func (c *DPFMAPICaller) Item(
 		CountryOfOrigin, CountryOfOriginLanguage, ItemBlockStatus, ItemDeliveryBlockStatus, ItemBillingBlockStatus, IsCancelled,
 		IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data
-		`+where+` );`, args...,
+		`+where+` ORDER BY IsMarkedForDeletion ASC, IsCancelled ASC, OrderID DESC, OrderItem ASC ;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -299,7 +298,9 @@ func (c *DPFMAPICaller) Items(
 		item = &input.Header.Item[0]
 	}
 	where := fmt.Sprintf("WHERE item.OrderID IS NOT NULL\nAND header.OrderID = %d", input.Header.OrderID)
-	where = fmt.Sprintf("%s\nAND header.IsMarkedForDeletion = %v", where, *input.Header.IsMarkedForDeletion)
+	if input.Header.IsMarkedForDeletion != nil {
+		where = fmt.Sprintf("%s\nAND header.IsMarkedForDeletion = %v", where, *input.Header.IsMarkedForDeletion)
+	}
 	if input.Header.Buyer != nil {
 		where = fmt.Sprintf("%s\nAND header.Buyer = %d", where, *input.Header.Buyer)
 	}
@@ -345,7 +346,7 @@ func (c *DPFMAPICaller) Items(
 			item.IsMarkedForDeletion
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as header
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data as item
-		ON header.OrderID = item.OrderID ` + where + ` ;`)
+		ON header.OrderID = item.OrderID ` + where + ` ORDER BY item.IsMarkedForDeletion ASC, item.IsCancelled ASC, item.OrderID DESC, item.OrderItem ASC ;`)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
@@ -382,7 +383,8 @@ func (c *DPFMAPICaller) ItemPricingElement(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_pricing_element_data
-		WHERE (OrderID, OrderItem) IN ( `+repeat+` );`, args...,
+		WHERE (OrderID, OrderItem) IN ( `+repeat+` )
+		ORDER BY OrderID DESC, OrderItem DESC, PricingProcedureCounter DESC ;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -417,7 +419,7 @@ func (c *DPFMAPICaller) ItemPricingElements(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_pricing_element_data
-		` + where + ` ;`,
+		` + where + ` ORDER BY OrderID DESC, OrderItem DESC, PricingProcedureCounter DESC;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -457,7 +459,8 @@ func (c *DPFMAPICaller) ItemScheduleLine(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_schedule_line_data
-		WHERE (OrderID, OrderItem, ScheduleLine) IN ( `+repeat+` );`, args...,
+		WHERE (OrderID, OrderItem, ScheduleLine) IN ( `+repeat+` ) 
+		ORDER BY OrderID DESC, OrderItem DESC, ScheduleLine DESC;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -484,12 +487,12 @@ func (c *DPFMAPICaller) ItemScheduleLines(
 	orderID := input.Header.OrderID
 	item := input.Header.Item[0]
 
-	where := fmt.Sprintf("WHERE (OrderID, OrderItem) IN ( (%d, %d) ) ", orderID, item.OrderItem)
+	where := fmt.Sprintf("WHERE ( OrderID, OrderItem ) IN ( ( %d, %d ) ) ", orderID, item.OrderItem)
 
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_schedule_line_data
-		` + where + `;`,
+		` + where + ` ORDER BY OrderID DESC, OrderItem DESC, ScheduleLine DESC;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -527,7 +530,8 @@ func (c *DPFMAPICaller) Address(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_address_data
-		WHERE (OrderID, AddressID) IN ( `+repeat+` );`, args...,
+		WHERE (OrderID, AddressID) IN ( `+repeat+` ) 
+		ORDER BY OrderID DESC, AddressID DESC;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -565,7 +569,8 @@ func (c *DPFMAPICaller) Partner(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data
-		WHERE (OrderID, PartnerFunction, BusinessPartner) IN ( `+repeat+` );`, args...,
+		WHERE (OrderID, PartnerFunction, BusinessPartner) IN ( `+repeat+` ) 
+		ORDER BY OrderID DESC, BusinessPartner DESC, AddressID DESC;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -639,7 +644,8 @@ func (c *DPFMAPICaller) HeadersBySeller(
 		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVER_TO"
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerSeller
 		ON OrdersHeader.OrderID = OrdersHeaderPartnerSeller.OrderID AND OrdersHeaderPartnerSeller.PartnerFunction = "SELLER"
-		WHERE (OrdersHeader.Seller) = (?);`, seller,
+		WHERE (OrdersHeader.Seller) = (?)
+		ORDER BY OrdersHeader.IsMarkedForDeletion ASC, OrdersHeader.IsCancelled ASC, OrdersHeader.OrderID DESC;`, seller,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -675,7 +681,8 @@ func (c *DPFMAPICaller) HeadersByBuyer(
 		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVER_TO"
 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerBuyer
 		ON OrdersHeader.OrderID = OrdersHeaderPartnerBuyer.OrderID AND OrdersHeaderPartnerBuyer.PartnerFunction = "BUYER"
-		WHERE (OrdersHeader.Buyer) = (?);`, buyer,
+		WHERE (OrdersHeader.Buyer) = (?) 
+		ORDER BY OrdersHeader.IsMarkedForDeletion ASC, OrdersHeader.IsCancelled ASC, OrdersHeader.OrderID DESC;`, buyer,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
