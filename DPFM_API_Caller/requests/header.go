@@ -15,8 +15,6 @@ type Header struct {
 	BillFromCountry                  *string  `json:"BillFromCountry"`
 	Payer                            *int     `json:"Payer"`
 	Payee                            *int     `json:"Payee"`
-	CreationDate                     *string  `json:"CreationDate"`
-	LastChangeDate                   *string  `json:"LastChangeDate"`
 	ContractType                     *string  `json:"ContractType"`
 	OrderValidityStartDate           *string  `json:"OrderValidityStartDate"`
 	OrderValidityEndDate             *string  `json:"OrderValidityEndDate"`
@@ -49,6 +47,10 @@ type Header struct {
 	HeaderBlockStatus                *bool    `json:"HeaderBlockStatus"`
 	HeaderDeliveryBlockStatus        *bool    `json:"HeaderDeliveryBlockStatus"`
 	HeaderBillingBlockStatus         *bool    `json:"HeaderBillingBlockStatus"`
+	CreationDate                     *string  `json:"CreationDate"`
+	CreationTime                     *string  `json:"CreationTime"`
+	LastChangeDate                   *string  `json:"LastChangeDate"`
+	LastChangeTime                   *string  `json:"LastChangeTime"`
 	IsCancelled                      *bool    `json:"IsCancelled"`
 	IsMarkedForDeletion              *bool    `json:"IsMarkedForDeletion"`
 }

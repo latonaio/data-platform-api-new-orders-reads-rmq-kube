@@ -16,16 +16,14 @@ type Item struct {
 	ProductStandardID                             *string  `json:"ProductStandardID"`
 	ProductGroup                                  *string  `json:"ProductGroup"`
 	BaseUnit                                      *string  `json:"BaseUnit"`
+	BillOfMaterial                                *int     `json:"BillOfMaterial"`
+	BillOfMaterialItem                            *int     `json:"BillOfMaterialItem"`
 	PricingDate                                   *string  `json:"PricingDate"`
 	PriceDetnExchangeRate                         *float32 `json:"PriceDetnExchangeRate"`
 	RequestedDeliveryDate                         *string  `json:"RequestedDeliveryDate"`
 	RequestedDeliveryTime                         *string  `json:"RequestedDeliveryTime"`
 	DeliverToParty                                *int     `json:"DeliverToParty"`
 	DeliverFromParty                              *int     `json:"DeliverFromParty"`
-	CreationDate                                  *string  `json:"CreationDate"`
-	CreationTime                                  *string  `json:"CreationTime"`
-	LastChangeDate                                *string  `json:"LastChangeDate"`
-	LastChangeTime                                *string  `json:"LastChangeTime"`
 	DeliverToPlant                                *string  `json:"DeliverToPlant"`
 	DeliverToPlantTimeZone                        *string  `json:"DeliverToPlantTimeZone"`
 	DeliverToPlantStorageLocation                 *string  `json:"DeliverToPlantStorageLocation"`
@@ -101,7 +99,8 @@ type Item struct {
 	PaymentDueDate                                *string  `json:"PaymentDueDate"`
 	NetPaymentDays                                *int     `json:"NetPaymentDays"`
 	PaymentMethod                                 *string  `json:"PaymentMethod"`
-	Project                                       *string  `json:"Project"`
+	Project                                       *int     `json:"Project"`
+	WBSElement                                    *int     `json:"WBSElement"`
 	AccountingExchangeRate                        *float32 `json:"AccountingExchangeRate"`
 	ReferenceDocument                             *int     `json:"ReferenceDocument"`
 	ReferenceDocumentItem                         *int     `json:"ReferenceDocumentItem"`
@@ -114,9 +113,16 @@ type Item struct {
 	TaxRate                                       *float32 `json:"TaxRate"`
 	CountryOfOrigin                               *string  `json:"CountryOfOrigin"`
 	CountryOfOriginLanguage                       *string  `json:"CountryOfOriginLanguage"`
+	Equipment				                      *int	   `json:"Equipment"`
+	PlannedFreight				                  *int	   `json:"PlannedFreight"`
+	FreightOrder				                  *int	   `json:"FreightOrder"`
 	ItemBlockStatus                               *bool    `json:"ItemBlockStatus"`
 	ItemDeliveryBlockStatus                       *bool    `json:"ItemDeliveryBlockStatus"`
 	ItemBillingBlockStatus                        *bool    `json:"ItemBillingBlockStatus"`
+	CreationDate                                  *string  `json:"CreationDate"`
+	CreationTime                                  *string  `json:"CreationTime"`
+	LastChangeDate                                *string  `json:"LastChangeDate"`
+	LastChangeTime                                *string  `json:"LastChangeTime"`
 	IsCancelled                                   *bool    `json:"IsCancelled"`
 	IsMarkedForDeletion                           *bool    `json:"IsMarkedForDeletion"`
 }

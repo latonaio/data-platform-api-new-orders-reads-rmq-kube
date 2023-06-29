@@ -1,7 +1,7 @@
 # data-platform-api-new-orders-reads-rmq-kube
 
-data-platform-api-new-orders-reads-rmq-kube は、周辺業務システム　を データ連携基盤 と統合することを目的に、API でオーダーデータを登録するマイクロサービスです。  
-https://xxx.xxx.io/api/API_ORDERS_SRV/creates/
+data-platform-api-new-orders-reads-rmq-kube は、周辺業務システム　を データ連携基盤 と統合することを目的に、API でオーダーデータを取得するマイクロサービスです。  
+https://xxx.xxx.io/api/API_ORDERS_SRV/reads/
 
 ## 動作環境
 
@@ -25,8 +25,6 @@ data-platform-api-new-orders-reads-rmq-kube には、次の API をコールす�
 * A_ItemScheduleLine（データ連携基盤 オーダー - 明細納入日程行データ）
 * A_Address（データ連携基盤 オーダー - 住所データ）
 
- 
-
 ## API への 値入力条件 の 初期値
 data-platform-api-new-orders-reads-rmq-kube において、API への値入力条件の初期値は、入力ファイルレイアウトの種別毎に、次の通りとなっています。  
 
@@ -43,8 +41,6 @@ accepter において 下記の例のように、データの種別（＝APIの�
 ```
 	"api_schema": "DPFMOrdersReads",
 	"accepter": ["Header"],
-	"order_id": null,
-	"deleted": false
 ```
   
 * 全データを取得する際のsample.jsonの記載例(2)  
@@ -54,8 +50,6 @@ accepter において 下記の例のように、データの種別（＝APIの�
 ```
 	"api_schema": "DPFMOrdersReads",
 	"accepter": ["All"],
-	"order_id": null,
-	"deleted": false
 ```
 
 ## 指定されたデータ種別のコール
@@ -89,4 +83,3 @@ func (c *DPFMAPICaller) AsyncOrdersReads(
 ```
 XXX
 ```
-
