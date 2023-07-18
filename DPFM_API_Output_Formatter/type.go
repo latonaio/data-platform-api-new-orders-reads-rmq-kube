@@ -25,16 +25,13 @@ type SDC struct {
 }
 
 type Message struct {
-	Header *[]Header `json:"Header"`
-	Item   *[]Item   `json:"Item"`
-	// Items              *[]Items              `json:"Items"`
+	Header 			   *[]Header			 `json:"Header"`
+	Item   			   *[]Item   			 `json:"Item"`
 	ItemPricingElement *[]ItemPricingElement `json:"ItemPricingElement"`
 	ItemScheduleLine   *[]ItemScheduleLine   `json:"ItemScheduleLine"`
 	Address            *[]Address            `json:"Address"`
 	Partner            *[]Partner            `json:"Partner"`
 	HeaderDoc          *[]HeaderDoc          `json:"HeaderDoc"`
-	HeadersBySeller    *[]HeadersBySeller    `json:"HeadersBySeller"`
-	HeadersByBuyer     *[]HeadersByBuyer     `json:"HeadersByBuyer"`
 }
 
 type Header struct {
@@ -71,9 +68,7 @@ type Header struct {
 	HeaderCompleteDeliveryIsDefined  *bool    `json:"HeaderCompleteDeliveryIsDefined"`
 	Incoterms                        *string  `json:"Incoterms"`
 	PaymentTerms                     string   `json:"PaymentTerms"`
-	PaymentTermsName                 *string  `json:"PaymentTermsName"`
 	PaymentMethod                    string   `json:"PaymentMethod"`
-	PaymentMethodName                *string  `json:"PaymentMethodName"`
 	ReferenceDocument                *int     `json:"ReferenceDocument"`
 	ReferenceDocumentItem            *int     `json:"ReferenceDocumentItem"`
 	AccountAssignmentGroup           string   `json:"AccountAssignmentGroup"`
@@ -90,6 +85,7 @@ type Header struct {
 	LastChangeTime                   string   `json:"LastChangeTime"`
 	IsCancelled                      *bool    `json:"IsCancelled"`
 	IsMarkedForDeletion              *bool    `json:"IsMarkedForDeletion"`
+}
 
 type Item struct {
 	OrderID                                       int      `json:"OrderID"`
@@ -204,9 +200,9 @@ type Item struct {
 	TaxRate                                       *float32 `json:"TaxRate"`
 	CountryOfOrigin                               *string  `json:"CountryOfOrigin"`
 	CountryOfOriginLanguage                       *string  `json:"CountryOfOriginLanguage"`
-	Equipment				                      *int	   `json:"Equipment"`
-	PlannedFreight				                  *int	   `json:"PlannedFreight"`
-	FreightOrder				                  *int	   `json:"FreightOrder"`
+	Equipment                                     *int     `json:"Equipment"`
+	PlannedFreight                                *int     `json:"PlannedFreight"`
+	FreightOrder                                  *int     `json:"FreightOrder"`
 	ItemBlockStatus                               *bool    `json:"ItemBlockStatus"`
 	ItemDeliveryBlockStatus                       *bool    `json:"ItemDeliveryBlockStatus"`
 	ItemBillingBlockStatus                        *bool    `json:"ItemBillingBlockStatus"`
@@ -272,10 +268,10 @@ type ItemScheduleLine struct {
 	StockIsFullyConfirmed                           *bool    `json:"StockIsFullyConfirmed"`
 	PlusMinusFlag                                   *string  `json:"PlusMinusFlag"`
 	ItemScheduleLineDeliveryBlockStatus             *bool    `json:"ItemScheduleLineDeliveryBlockStatus"`
-	CreationDate               						*string  `json:"CreationDate"`
-	CreationTime               						*string  `json:"CreationTime"`
-	LastChangeDate             						*string  `json:"LastChangeDate"`
-	LastChangeTime             						*string  `json:"LastChangeTime"`
+	CreationDate                                    *string  `json:"CreationDate"`
+	CreationTime                                    *string  `json:"CreationTime"`
+	LastChangeDate                                  *string  `json:"LastChangeDate"`
+	LastChangeTime                                  *string  `json:"LastChangeTime"`
 	IsCancelled                                     *bool    `json:"IsCancelled"`
 	IsMarkedForDeletion                             *bool    `json:"IsMarkedForDeletion"`
 }
@@ -317,38 +313,4 @@ type HeaderDoc struct {
 	FileName                 *string `json:"FileName"`
 	FilePath                 *string `json:"FilePath"`
 	DocIssuerBusinessPartner *int    `json:"DocIssuerBusinessPartner"`
-}
-
-type HeadersBySeller struct {
-	OrderID                          int     `json:"OrderID"`
-	HeaderDeliveryStatus             *string `json:"HeaderDeliveryStatus"`
-	DeliverToBusinessPartnerFullName *string `json:"DeliverToBusinessPartnerFullName"`
-	SellerBusinessPartnerFullName    *string `json:"SellerBusinessPartnerFullName"`
-}
-
-type HeadersByBuyer struct {
-	OrderID                          int     `json:"OrderID"`
-	HeaderDeliveryStatus             *string `json:"HeaderDeliveryStatus"`
-	DeliverToBusinessPartnerFullName *string `json:"DeliverToBusinessPartnerFullName"`
-	BuyerBusinessPartnerFullName     *string `json:"BuyerBusinessPartnerFullName"`
-}
-
-type Items struct {
-	OrderID                     int      `json:"OrderID"`
-	OrderItem                   int      `json:"OrderItem"`
-	OrderItemCategory           *string  `json:"OrderItemCategory"`
-	OrderItemText               *string  `json:"OrderItemText"`
-	OrderItemTextByBuyer        *string  `json:"OrderItemTextByBuyer"`
-	OrderItemTextBySeller       *string  `json:"OrderItemTextBySeller"`
-	OrderQuantityInBaseUnit     *float32 `json:"OrderQuantityInBaseUnit"`
-	OrderQuantityInDeliveryUnit *float32 `json:"OrderQuantityInDeliveryUnit"`
-	BaseUnit                    *string  `json:"BaseUnit"`
-	DeliveryUnit                *string  `json:"DeliveryUnit"`
-	Product                     *string  `json:"Product"`
-	NetAmount                   *float32 `json:"NetAmount"`
-	DeliverToParty              *int     `json:"DeliverToParty"`
-	DeliverFromParty            *int     `json:"DeliverFromParty"`
-	RequestedDeliveryDate       *string  `json:"RequestedDeliveryDate"`
-	IsCancelled                 *bool    `json:"IsCancelled"`
-	IsMarkedForDeletion         *bool    `json:"IsMarkedForDeletion"`
 }

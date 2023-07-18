@@ -34,10 +34,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				header = c.Header(mtx, input, output, errs, log)
 			}()
-//		case "Headers":
-//			func() {
-//				header = c.Headers(mtx, input, output, errs, log)
-//			}()
+			//		case "Headers":
+			//			func() {
+			//				header = c.Headers(mtx, input, output, errs, log)
+			//			}()
 		case "HeadersByBuyer":
 			func() {
 				header = c.HeadersByBuyer(mtx, input, output, errs, log)
@@ -98,9 +98,6 @@ func (c *DPFMAPICaller) readSqlProcess(
 		Address:            address,
 		Partner:            partner,
 		HeaderDoc:          headerDoc,
-		HeadersBySeller:    headersBySeller,
-		HeadersByBuyer:     headersByBuyer,
-		// Items:              items,
 	}
 
 	return data
@@ -123,21 +120,8 @@ func (c *DPFMAPICaller) Header(
 	}
 
 	rows, err := c.db.Query(
-		`SELECT
-		header.OrderID,header.OrderDate,header.OrderType,header.SupplyChainRelationshipID,header.SupplyChainRelationshipBillingID,header.
-		SupplyChainRelationshipPaymentID,header.Buyer,header.Seller,header.BillToParty,header.BillFromParty,header.BillToCountry,header.
-		BillFromCountry,header.Payer,header.Payee,header.CreationDate,header.LastChangeDate,header.ContractType,header.OrderValidityStartDate,header.
-		OrderValidityEndDate,header.InvoicePeriodStartDate,header.InvoicePeriodEndDate,header.TotalNetAmount,header.TotalTaxAmount,header.
-		TotalGrossAmount,header.HeaderDeliveryStatus,header.HeaderBillingStatus,header.HeaderDocReferenceStatus,header.
-		TransactionCurrency,header.PricingDate,header.PriceDetnExchangeRate,header.RequestedDeliveryDate,header.RequestedDeliveryTime,header.HeaderCompleteDeliveryIsDefined,header.
-		Incoterms,terms.PaymentTerms,terms.PaymentTermsName,method.PaymentMethod,method.PaymentMethodName,header.ReferenceDocument,header.ReferenceDocumentItem,header.AccountAssignmentGroup,header.
-		AccountingExchangeRate,header.InvoiceDocumentDate,header.IsExportImport,header.HeaderText,header.HeaderBlockStatus,header.
-		HeaderDeliveryBlockStatus,header.HeaderBillingBlockStatus,header.IsCancelled,header.IsMarkedForDeletion
+		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
-		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_terms_payment_terms_text_data AS terms
-		ON header.PaymentTerms = terms.PaymentTerms
-		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_payment_method_text_data AS method
-		ON header.PaymentMethod = method.PaymentMethod
 		` + where + ` ORDER BY header.IsMarkedForDeletion ASC, header.IsCancelled ASC, header.OrderID DESC;`,
 	)
 	if err != nil {
@@ -226,38 +210,39 @@ func (c *DPFMAPICaller) HeadersByBuyer(
 	output *dpfm_api_output_formatter.SDC,
 	errs *[]error,
 	log *logger.Logger,
-) []dpfm_api_output_formatter.Header {
-	buyer 							:= input.Header.Buyer
-	headerCompleteDeliveryIsDefined := input.Header.HeaderCompleteDeliveryIsDefined
-	headerDeliveryBlockStatus		:= input.Header.HeaderDeliveryBlockStatus
-	headerDeliveryStatus			:= input.Header.HeaderDeliveryStatus
-	isCancelled						:= input.Header.IsCancelled
-	isMarkedForDeletion 			:= input.Header.IsMarkedForDeletion
+) *[]dpfm_api_output_formatter.Header {
+	where := "WHERE 1 = 1"
+	if input.Header.Buyer != nil {
+		where = fmt.Sprintf("%s\nAND Buyer = %v", where, *input.Header.Buyer)
+	}
+	if input.Header.HeaderCompleteDeliveryIsDefined != nil {
+		where = fmt.Sprintf("%s\nAND HeaderCompleteDeliveryIsDefined = %t", where, *input.Header.HeaderCompleteDeliveryIsDefined)
+	}
+	if input.Header.HeaderDeliveryBlockStatus != nil {
+		where = fmt.Sprintf("%s\nAND HeaderDeliveryBlockStatus = %t", where, *input.Header.HeaderDeliveryBlockStatus)
+	}
+	if input.Header.HeaderDeliveryStatus != nil {
+		where = fmt.Sprintf("%s\nAND HeaderDeliveryStatus != '%s'", where, *input.Header.HeaderDeliveryStatus)
+	}
+	if input.Header.IsCancelled != nil {
+		where = fmt.Sprintf("%s\nAND IsCancelled = %t", where, *input.Header.IsCancelled)
+	}
+	if input.Header.IsMarkedForDeletion != nil {
+		where = fmt.Sprintf("%s\nAND IsMarkedForDeletion = %t", where, *input.Header.IsMarkedForDeletion)
+	}
 
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data
-		WHERE (
-		       Buyer,
-			   HeaderCompleteDeliveryIsDefined,
-			   HeaderDeliveryBlockStatus,
-			   HeaderDeliveryStatus,
-		       IsCancelled,
-		       IsMarkedForDeletion
-		) = (?, ?, ?, ?, ?, ?);`,
-		buyer,
-		headerCompleteDeliveryIsDefined,
-		headerDeliveryBlockStatus,
-		headerDeliveryStatus,
-		isCancelled,
-		isMarkedForDeletion,
+		` + where + `;`,
 	)
+
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
 	}
 
-	data, err := dpfm_api_output_formatter.ConvertToHeader(input, rows)
+	data, err := dpfm_api_output_formatter.ConvertToHeader(rows)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
@@ -272,38 +257,39 @@ func (c *DPFMAPICaller) HeadersBySeller(
 	output *dpfm_api_output_formatter.SDC,
 	errs *[]error,
 	log *logger.Logger,
-) []dpfm_api_output_formatter.Header {
-	seller 							:= input.Header.Seller
-	headerCompleteDeliveryIsDefined := input.Header.HeaderCompleteDeliveryIsDefined
-	headerDeliveryBlockStatus		:= input.Header.HeaderDeliveryBlockStatus
-	headerDeliveryStatus			:= input.Header.HeaderDeliveryStatus
-	isCancelled						:= input.Header.IsCancelled
-	isMarkedForDeletion 			:= input.Header.IsMarkedForDeletion
+) *[]dpfm_api_output_formatter.Header {
+	where := "WHERE 1 = 1"
+	if input.Header.Seller != nil {
+		where = fmt.Sprintf("%s\nAND Seller = %v", where, *input.Header.Seller)
+	}
+	if input.Header.HeaderCompleteDeliveryIsDefined != nil {
+		where = fmt.Sprintf("%s\nAND HeaderCompleteDeliveryIsDefined = %t", where, *input.Header.HeaderCompleteDeliveryIsDefined)
+	}
+	if input.Header.HeaderDeliveryBlockStatus != nil {
+		where = fmt.Sprintf("%s\nAND HeaderDeliveryBlockStatus = %t", where, *input.Header.HeaderDeliveryBlockStatus)
+	}
+	if input.Header.HeaderDeliveryStatus != nil {
+		where = fmt.Sprintf("%s\nAND HeaderDeliveryStatus != '%s'", where, *input.Header.HeaderDeliveryStatus)
+	}
+	if input.Header.IsCancelled != nil {
+		where = fmt.Sprintf("%s\nAND IsCancelled = %t", where, *input.Header.IsCancelled)
+	}
+	if input.Header.IsMarkedForDeletion != nil {
+		where = fmt.Sprintf("%s\nAND IsMarkedForDeletion = %t", where, *input.Header.IsMarkedForDeletion)
+	}
 
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data
-		WHERE (
-		       Seller,
-			   HeaderCompleteDeliveryIsDefined,
-			   HeaderDeliveryBlockStatus,
-			   HeaderDeliveryStatus,
-		       IsCancelled,
-		       IsMarkedForDeletion
-		) = (?, ?, ?, ?, ?, ?);`,
-		seller,
-		headerCompleteDeliveryIsDefined,
-		headerDeliveryBlockStatus,
-		headerDeliveryStatus,
-		isCancelled,
-		isMarkedForDeletion,
+		` + where + `;`,
 	)
+
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
 	}
 
-	data, err := dpfm_api_output_formatter.ConvertToHeader(input, rows)
+	data, err := dpfm_api_output_formatter.ConvertToHeader(rows)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
@@ -441,7 +427,7 @@ func (c *DPFMAPICaller) Items(
 	}
 	defer rows.Close()
 
-	data, err := dpfm_api_output_formatter.ConvertToItems(rows)
+	data, err := dpfm_api_output_formatter.ConvertToItem(rows)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
@@ -712,120 +698,3 @@ func (c *DPFMAPICaller) HeaderDoc(
 
 	return data
 }
-
-func (c *DPFMAPICaller) HeadersBySeller(
-	mtx *sync.Mutex,
-	input *dpfm_api_input_reader.SDC,
-	output *dpfm_api_output_formatter.SDC,
-	errs *[]error,
-	log *logger.Logger,
-) *[]dpfm_api_output_formatter.HeadersBySeller {
-	seller := input.Header.Seller
-
-	rows, err := c.db.Query(
-		`SELECT OrdersHeader.OrderID,
-		OrdersHeader.HeaderDeliveryStatus,
-		OrdersHeaderPartnerDeliverTo.BusinessPartnerFullName as DeliverToBusinessPartnerFullName,
-		OrdersHeaderPartnerSeller.BusinessPartnerFullName as SellerBusinessPartnerFullName
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as OrdersHeader
-		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerDeliverTo
-		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVER_TO"
-		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerSeller
-		ON OrdersHeader.OrderID = OrdersHeaderPartnerSeller.OrderID AND OrdersHeaderPartnerSeller.PartnerFunction = "SELLER"
-		WHERE (OrdersHeader.Seller) = (?)
-		ORDER BY OrdersHeader.IsMarkedForDeletion ASC, OrdersHeader.IsCancelled ASC, OrdersHeader.OrderID DESC;`, seller,
-	)
-	if err != nil {
-		*errs = append(*errs, err)
-		return nil
-	}
-	defer rows.Close()
-
-	data, err := dpfm_api_output_formatter.ConvertToHeadersBySeller(rows)
-	if err != nil {
-		*errs = append(*errs, err)
-		return nil
-	}
-
-	return data
-}
-
-func (c *DPFMAPICaller) HeadersByBuyer(
-	mtx *sync.Mutex,
-	input *dpfm_api_input_reader.SDC,
-	output *dpfm_api_output_formatter.SDC,
-	errs *[]error,
-	log *logger.Logger,
-) *[]dpfm_api_output_formatter.HeadersByBuyer {
-	buyer := input.Header.Buyer
-
-	rows, err := c.db.Query(
-		`SELECT OrdersHeader.OrderID,
-		OrdersHeader.HeaderDeliveryStatus,
-		OrdersHeaderPartnerDeliverTo.BusinessPartnerFullName as DeliverToBusinessPartnerFullName,
-		OrdersHeaderPartnerBuyer.BusinessPartnerFullName as BuyerBusinessPartnerFullName
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as OrdersHeader
-		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerDeliverTo
-		ON OrdersHeader.OrderID = OrdersHeaderPartnerDeliverTo.OrderID AND OrdersHeaderPartnerDeliverTo.PartnerFunction = "DELIVER_TO"
-		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data as OrdersHeaderPartnerBuyer
-		ON OrdersHeader.OrderID = OrdersHeaderPartnerBuyer.OrderID AND OrdersHeaderPartnerBuyer.PartnerFunction = "BUYER"
-		WHERE (OrdersHeader.Buyer) = (?) 
-		ORDER BY OrdersHeader.IsMarkedForDeletion ASC, OrdersHeader.IsCancelled ASC, OrdersHeader.OrderID DESC;`, buyer,
-	)
-	if err != nil {
-		*errs = append(*errs, err)
-		return nil
-	}
-	defer rows.Close()
-
-	data, err := dpfm_api_output_formatter.ConvertToHeadersByBuyer(rows)
-	if err != nil {
-		*errs = append(*errs, err)
-		return nil
-	}
-
-	return data
-}
-
-// func (c *DPFMAPICaller) Items(
-// 	mtx *sync.Mutex,
-// 	input *dpfm_api_input_reader.SDC,
-// 	output *dpfm_api_output_formatter.SDC,
-// 	errs *[]error,
-// 	log *logger.Logger,
-// ) *[]dpfm_api_output_formatter.Items {
-// 	orderID := input.Header.OrderID
-
-// 	rows, err := c.db.Query(
-// 		`SELECT OrderItems.OrderID,
-// 		OrderItems.OrderItem,
-// 		OrderItems.OrderItemText,
-// 		OrderItems.OrderQuantityInDeliveryUnit,
-// 		OrderItems.NetAmount,
-// 		OrderItems.Product,
-// 		ProductDescription.ProductDescription,
-// 		OrdersItemPricingElement.ConditionRateValue,
-// 		OrdersItemScheduleLine.ConfirmedDeliveryDate
-// 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data as OrderItems
-// 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_product_master_product_description_data as ProductDescription
-// 		ON OrderItems.Product = ProductDescription.Product
-// 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_pricing_element_data as OrdersItemPricingElement
-// 		ON OrderItems.OrderID = OrdersItemPricingElement.OrderID AND OrderItems.OrderItem = OrdersItemPricingElement.OrderItem
-// 		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_schedule_line_data as OrdersItemScheduleLine
-// 		ON OrderItems.OrderID = OrdersItemScheduleLine.OrderID AND OrderItems.OrderItem = OrdersItemScheduleLine.OrderItem
-// 		WHERE (OrderItems.OrderID) = (?);`, orderID,
-// 	)
-// 	if err != nil {
-// 		*errs = append(*errs, err)
-// 		return nil
-// 	}
-// defer rows.Close()
-
-// 	data, err := dpfm_api_output_formatter.ConvertToItems(rows)
-// 	if err != nil {
-// 		*errs = append(*errs, err)
-// 		return nil
-// 	}
-
-// 	return data
-// }

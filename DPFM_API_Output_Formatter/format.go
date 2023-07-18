@@ -49,9 +49,7 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			&pm.HeaderCompleteDeliveryIsDefined,
 			&pm.Incoterms,
 			&pm.PaymentTerms,
-			&pm.PaymentTermsName,
 			&pm.PaymentMethod,
-			&pm.PaymentMethodName,
 			&pm.ReferenceDocument,
 			&pm.ReferenceDocumentItem,
 			&pm.AccountAssignmentGroup,
@@ -109,9 +107,7 @@ func ConvertToHeader(rows *sql.Rows) (*[]Header, error) {
 			HeaderCompleteDeliveryIsDefined:  data.HeaderCompleteDeliveryIsDefined,
 			Incoterms:                        data.Incoterms,
 			PaymentTerms:                     data.PaymentTerms,
-			PaymentTermsName:                 data.PaymentTermsName,
 			PaymentMethod:                    data.PaymentMethod,
-			PaymentMethodName:                data.PaymentMethodName,
 			ReferenceDocument:                data.ReferenceDocument,
 			ReferenceDocumentItem:            data.ReferenceDocumentItem,
 			AccountAssignmentGroup:           data.AccountAssignmentGroup,
@@ -536,7 +532,7 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 			TaxRate:                                       data.TaxRate,
 			CountryOfOrigin:                               data.CountryOfOrigin,
 			CountryOfOriginLanguage:                       data.CountryOfOriginLanguage,
-			Equipment:		                               data.Equipment,
+			Equipment:                                     data.Equipment,
 			PlannedFreight:                                data.PlannedFreight,
 			FreightOrder:                                  data.FreightOrder,
 			ItemBlockStatus:                               data.ItemBlockStatus,
@@ -552,68 +548,6 @@ func ConvertToItem(rows *sql.Rows) (*[]Item, error) {
 	}
 
 	return &item, nil
-}
-
-func ConvertToItems(rows *sql.Rows) (*[]Item, error) {
-	defer rows.Close()
-	items := make([]Item, 0)
-
-	i := 0
-	for rows.Next() {
-		i++
-		pm := &requests.Items{}
-
-		err := rows.Scan(
-			&pm.OrderID,
-			&pm.OrderItem,
-			&pm.OrderItemCategory,
-			&pm.OrderItemText,
-			&pm.OrderItemTextByBuyer,
-			&pm.OrderItemTextBySeller,
-			&pm.OrderQuantityInBaseUnit,
-			&pm.OrderQuantityInDeliveryUnit,
-			&pm.BaseUnit,
-			&pm.DeliveryUnit,
-			&pm.Product,
-			&pm.NetAmount,
-			&pm.DeliverToParty,
-			&pm.DeliverFromParty,
-			&pm.RequestedDeliveryDate,
-			&pm.IsCancelled,
-			&pm.IsMarkedForDeletion,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &items, err
-		}
-
-		data := pm
-		items = append(items, Item{
-			OrderID:                     data.OrderID,
-			OrderItem:                   data.OrderItem,
-			OrderItemCategory:           data.OrderItemCategory,
-			OrderItemText:               data.OrderItemText,
-			OrderItemTextByBuyer:        data.OrderItemTextByBuyer,
-			OrderItemTextBySeller:       data.OrderItemTextBySeller,
-			OrderQuantityInBaseUnit:     data.OrderQuantityInBaseUnit,
-			OrderQuantityInDeliveryUnit: data.OrderQuantityInDeliveryUnit,
-			BaseUnit:                    data.BaseUnit,
-			DeliveryUnit:                data.DeliveryUnit,
-			Product:                     data.Product,
-			NetAmount:                   data.NetAmount,
-			DeliverToParty:              data.DeliverToParty,
-			DeliverFromParty:            data.DeliverFromParty,
-			RequestedDeliveryDate:       data.RequestedDeliveryDate,
-			IsCancelled:                 data.IsCancelled,
-			IsMarkedForDeletion:         data.IsMarkedForDeletion,
-		})
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &items, nil
-	}
-
-	return &items, nil
 }
 
 func ConvertToItemPricingElement(rows *sql.Rows) (*[]ItemPricingElement, error) {
@@ -768,10 +702,10 @@ func ConvertToItemScheduleLine(rows *sql.Rows) (*[]ItemScheduleLine, error) {
 			StockIsFullyConfirmed:                           data.StockIsFullyConfirmed,
 			PlusMinusFlag:                                   data.PlusMinusFlag,
 			ItemScheduleLineDeliveryBlockStatus:             data.ItemScheduleLineDeliveryBlockStatus,
-			CreationDate:               					 data.CreationDate,
-			CreationTime:             						 data.CreationTime,
-			LastChangeDate:            						 data.LastChangeDate,
-			LastChangeTime:           						 data.LastChangeTime,
+			CreationDate:                                    data.CreationDate,
+			CreationTime:                                    data.CreationTime,
+			LastChangeDate:                                  data.LastChangeDate,
+			LastChangeTime:                                  data.LastChangeTime,
 			IsCancelled:                                     data.IsCancelled,
 			IsMarkedForDeletion:                             data.IsMarkedForDeletion,
 		})
@@ -782,76 +716,4 @@ func ConvertToItemScheduleLine(rows *sql.Rows) (*[]ItemScheduleLine, error) {
 	}
 
 	return &itemScheduleLine, nil
-}
-
-func ConvertToHeadersBySeller(rows *sql.Rows) (*[]HeadersBySeller, error) {
-	defer rows.Close()
-	headersBySeller := make([]HeadersBySeller, 0)
-
-	i := 0
-	for rows.Next() {
-		i++
-		pm := &requests.HeadersBySeller{}
-
-		err := rows.Scan(
-			&pm.OrderID,
-			&pm.HeaderDeliveryStatus,
-			&pm.DeliverToBusinessPartnerFullName,
-			&pm.SellerBusinessPartnerFullName,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &headersBySeller, err
-		}
-
-		data := pm
-		headersBySeller = append(headersBySeller, HeadersBySeller{
-			OrderID:                          data.OrderID,
-			HeaderDeliveryStatus:             data.HeaderDeliveryStatus,
-			DeliverToBusinessPartnerFullName: data.DeliverToBusinessPartnerFullName,
-			SellerBusinessPartnerFullName:    data.SellerBusinessPartnerFullName,
-		})
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &headersBySeller, nil
-	}
-
-	return &headersBySeller, nil
-}
-
-func ConvertToHeadersByBuyer(rows *sql.Rows) (*[]HeadersByBuyer, error) {
-	defer rows.Close()
-	headersByBuyer := make([]HeadersByBuyer, 0)
-
-	i := 0
-	for rows.Next() {
-		i++
-		pm := &requests.HeadersByBuyer{}
-
-		err := rows.Scan(
-			&pm.OrderID,
-			&pm.HeaderDeliveryStatus,
-			&pm.DeliverToBusinessPartnerFullName,
-			&pm.BuyerBusinessPartnerFullName,
-		)
-		if err != nil {
-			fmt.Printf("err = %+v \n", err)
-			return &headersByBuyer, err
-		}
-
-		data := pm
-		headersByBuyer = append(headersByBuyer, HeadersByBuyer{
-			OrderID:                          data.OrderID,
-			HeaderDeliveryStatus:             data.HeaderDeliveryStatus,
-			DeliverToBusinessPartnerFullName: data.DeliverToBusinessPartnerFullName,
-			BuyerBusinessPartnerFullName:     data.BuyerBusinessPartnerFullName,
-		})
-	}
-	if i == 0 {
-		fmt.Printf("DBに対象のレコードが存在しません。")
-		return &headersByBuyer, nil
-	}
-
-	return &headersByBuyer, nil
 }
