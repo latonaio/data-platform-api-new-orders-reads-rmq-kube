@@ -371,16 +371,8 @@ func (c *DPFMAPICaller) Items(
 	if len(input.Header.Item) > 0 {
 		item = &input.Header.Item[0]
 	}
-	where := fmt.Sprintf("WHERE item.OrderID IS NOT NULL\nAND header.OrderID = %d", input.Header.OrderID)
-	if input.Header.IsMarkedForDeletion != nil {
-		where = fmt.Sprintf("%s\nAND header.IsMarkedForDeletion = %v", where, *input.Header.IsMarkedForDeletion)
-	}
-	if input.Header.Buyer != nil {
-		where = fmt.Sprintf("%s\nAND header.Buyer = %d", where, *input.Header.Buyer)
-	}
-	if input.Header.Seller != nil {
-		where = fmt.Sprintf("%s\nAND header.Seller = %d", where, *input.Header.Seller)
-	}
+	where := "WHERE 1 = 1"
+
 	if item != nil {
 		if item.ItemCompleteDeliveryIsDefined != nil {
 			where = fmt.Sprintf("%s\nAND item.ItemCompleteDeliveryIsDefined = %v", where, *item.ItemCompleteDeliveryIsDefined)
@@ -401,26 +393,9 @@ func (c *DPFMAPICaller) Items(
 
 	rows, err := c.db.Query(
 		`SELECT 
-			item.OrderID,
-			item.OrderItem,
-			item.OrderItemCategory,
-			item.OrderItemText,
-			item.OrderItemTextByBuyer,
-			item.OrderItemTextBySeller,
-			item.OrderQuantityInBaseUnit,
-			item.OrderQuantityInDeliveryUnit,
-			item.BaseUnit,
-			item.DeliveryUnit,
-			item.Product,
-			item.NetAmount,
-			item.DeliverToParty,
-			item.DeliverFromParty,
-			item.RequestedDeliveryDate,
-			item.IsCancelled,
-			item.IsMarkedForDeletion
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data as header
-		LEFT JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data as item
-		ON header.OrderID = item.OrderID ` + where + ` ORDER BY item.IsMarkedForDeletion ASC, item.IsCancelled ASC, item.OrderID DESC, item.OrderItem ASC ;`)
+			*
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data as item
+		` + where + ` ORDER BY item.IsMarkedForDeletion ASC, item.IsCancelled ASC, item.OrderID DESC, item.OrderItem ASC ;`)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
