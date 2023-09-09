@@ -31,7 +31,6 @@ type Message struct {
 	ItemScheduleLine   *[]ItemScheduleLine   `json:"ItemScheduleLine"`
 	Address            *[]Address            `json:"Address"`
 	Partner            *[]Partner            `json:"Partner"`
-	HeaderDoc          *[]HeaderDoc          `json:"HeaderDoc"`
 }
 
 type Header struct {
@@ -304,15 +303,4 @@ type Address struct {
 	Building    *string `json:"Building"`
 	Floor       *int    `json:"Floor"`
 	Room        *int    `json:"Room"`
-}
-
-type HeaderDoc struct {
-	OrderID                  int     `json:"OrderID"`
-	DocType                  string  `json:"DocType"`
-	DocVersionID             int     `json:"DocVersionID"`
-	DocID                    string  `json:"DocID"`
-	FileExtension            *string `json:"FileExtension"`
-	FileName                 *string `json:"FileName"`
-	FilePath                 *string `json:"FilePath"`
-	DocIssuerBusinessPartner *int    `json:"DocIssuerBusinessPartner"`
 }

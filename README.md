@@ -58,7 +58,7 @@ accepter における データ種別 の指定に基づいて DPFM_API_Caller �
 caller.go の func() 毎 の 以下の箇所が、指定された API をコールするソースコードです。  
 
 ```
-func (c *DPFMAPICaller) AsyncOrdersReads(
+func (c *DPFMAPICaller) AsyncReads(
 	accepter []string,
 	input *dpfm_api_input_reader.SDC,
 	output *dpfm_api_output_formatter.SDC,
@@ -78,7 +78,7 @@ func (c *DPFMAPICaller) AsyncOrdersReads(
 ## Output  
 本マイクロサービスでは、[golang-logging-library-for-data-platform](https://github.com/latonaio/golang-logging-library-for-data-platform) により、以下のようなデータがJSON形式で出力されます。  
 以下の sample.json の例は オーダー の ヘッダデータ が取得された結果の JSON の例です。  
-以下の項目のうち、"OrderID" ～ "PlusMinusFlag" は、/DPFM_API_Output_Formatter/type.go 内 の Type Header {} による出力結果です。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。  
+以下の項目のうち、"OrderID" ～ "IsMarkedForDeletion" は、/DPFM_API_Output_Formatter/type.go 内 の Type Header {} による出力結果です。"cursor" ～ "time"は、golang-logging-library による 定型フォーマットの出力結果です。  
 
 ```
 XXX

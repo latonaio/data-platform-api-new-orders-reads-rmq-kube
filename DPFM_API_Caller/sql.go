@@ -26,7 +26,6 @@ func (c *DPFMAPICaller) readSqlProcess(
 	var itemScheduleLine *[]dpfm_api_output_formatter.ItemScheduleLine
 	var address *[]dpfm_api_output_formatter.Address
 	var partner *[]dpfm_api_output_formatter.Partner
-	var headerDoc *[]dpfm_api_output_formatter.HeaderDoc
 
 	for _, fn := range accepter {
 		switch fn {
@@ -78,10 +77,6 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				partner = c.Partner(mtx, input, output, errs, log)
 			}()
-		case "HeaderDoc":
-			func() {
-				headerDoc = c.HeaderDoc(mtx, input, output, errs, log)
-			}()
 
 		default:
 		}
@@ -97,7 +92,6 @@ func (c *DPFMAPICaller) readSqlProcess(
 		ItemScheduleLine:   itemScheduleLine,
 		Address:            address,
 		Partner:            partner,
-		HeaderDoc:          headerDoc,
 	}
 
 	return data
@@ -628,44 +622,6 @@ func (c *DPFMAPICaller) Partner(
 	defer rows.Close()
 
 	data, err := dpfm_api_output_formatter.ConvertToPartner(rows)
-	if err != nil {
-		*errs = append(*errs, err)
-		return nil
-	}
-
-	return data
-}
-
-func (c *DPFMAPICaller) HeaderDoc(
-	mtx *sync.Mutex,
-	input *dpfm_api_input_reader.SDC,
-	output *dpfm_api_output_formatter.SDC,
-	errs *[]error,
-	log *logger.Logger,
-) *[]dpfm_api_output_formatter.HeaderDoc {
-	var args []interface{}
-	orderID := input.Header.OrderID
-	headerDoc := input.Header.HeaderDoc
-
-	cnt := 0
-	for _, v := range headerDoc {
-		args = append(args, orderID, v.DocType, v.DocVersionID, v.DocID)
-		cnt++
-	}
-	repeat := strings.Repeat("(?,?,?,?),", cnt-1) + "(?,?,?,?)"
-
-	rows, err := c.db.Query(
-		`SELECT *
-		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_doc_data
-		WHERE (OrderID, DocType, DocVersionID, DocID) IN ( `+repeat+` );`, args...,
-	)
-	if err != nil {
-		*errs = append(*errs, err)
-		return nil
-	}
-	defer rows.Close()
-
-	data, err := dpfm_api_output_formatter.ConvertToHeaderDoc(rows)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
