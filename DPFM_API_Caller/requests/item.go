@@ -121,6 +121,8 @@ type Item struct {
 	ItemBlockStatus                               *bool    `json:"ItemBlockStatus"`
 	ItemDeliveryBlockStatus                       *bool    `json:"ItemDeliveryBlockStatus"`
 	ItemBillingBlockStatus                        *bool    `json:"ItemBillingBlockStatus"`
+	ExternalReferenceDocument        			  *string  `json:"ExternalReferenceDocument"`
+	ExternalReferenceDocumentItem      			  *string  `json:"ExternalReferenceDocumentItem"`
 	CreationDate                                  string   `json:"CreationDate"`
 	CreationTime                                  string   `json:"CreationTime"`
 	LastChangeDate                                string   `json:"LastChangeDate"`
