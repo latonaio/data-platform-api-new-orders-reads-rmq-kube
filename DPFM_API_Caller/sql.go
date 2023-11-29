@@ -452,10 +452,10 @@ func (c *DPFMAPICaller) ItemPricingElements(
 	log *logger.Logger,
 ) *[]dpfm_api_output_formatter.ItemPricingElement {
 	where := fmt.Sprintf("WHERE OrderID = %d", input.Header.OrderID)
-	if input.Header.Buyer != nil {
+	if input.Header.Buyer != nil && *input.Header.Buyer != 0 {
 		where = fmt.Sprintf("%s\nAND Buyer = %d", where, *input.Header.Buyer)
 	}
-	if input.Header.Seller != nil {
+	if input.Header.Seller != nil && *input.Header.Seller != 0 {
 		where = fmt.Sprintf("%s\nAND Seller = %d", where, *input.Header.Seller)
 	}
 

@@ -1,0 +1,70 @@
+{
+	"connection_key": "request",
+	"result": true,
+	"redis_key": "abcdefg",
+	"filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+	"api_status_code": 200,
+	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+	"business_partner": 201,
+	"service_label": "ORDERS",
+	"OrdersInputParameters": {
+		"ReferenceDocument": 20000001,
+		"ReferenceDocumentItem": null
+	},
+	"Orders": {
+		"OrderID": 1,
+		"OrderDate": null,
+		"OrderType": "",
+		"SupplyChainRelationshipID": null,
+		"SupplyChainRelationshipBillingID": null,
+		"SupplyChainRelationshipPaymentID": null,
+		"Buyer": 101,
+		"Seller": 201,
+		"HeaderBlockStatus": null,
+		"HeaderDeliveryBlockStatus": null,
+		"HeaderBillingBlockStatus": null,
+		"IsCancelled": null,
+		"IsMarkedForDeletion": null,
+		"Item": [
+			{
+				"OrderItem": 1,
+				"OrderItemCategory": "",
+				"SupplyChainRelationshipID": null,
+				"SupplyChainRelationshipDeliveryID": null,
+				"SupplyChainRelationshipDeliveryPlantID": null,
+				"SupplyChainRelationshipStockConfPlantID": null,
+				"SupplyChainRelationshipProductionPlantID": null,
+				"ItemBlockStatus": null,
+				"ItemDeliveryBlockStatus": null,
+				"ItemBillingBlockStatus": null,
+				"IsCancelled": null,
+				"IsMarkedForDeletion": null,
+				"ItemPricingElement": [
+					{
+						"SupplyChainRelationshipID": null,
+						"Buyer": null,
+						"Seller": null,
+						"PricingProcedureCounter": null,
+						"ConditionRecord": null,
+						"ConditionSequentialNumber": null,
+						"ConditionType": "",
+						"PricingDate": null,
+						"ConditionRateValue": null,
+						"ConditionCurrency": "",
+						"ConditionQuantity": null,
+						"ConditionQuantityUnit": "",
+						"TaxCode": "",
+						"ConditionAmount": null,
+						"TransactionCurrency": "",
+						"ConditionIsManuallyChanged": null
+					}
+				]
+			}
+		]
+	},
+	"api_schema": "DPFMOrdersReads",
+	"accepter": [
+		"ItemPricingElements"
+	],
+	"deleted": false
+}

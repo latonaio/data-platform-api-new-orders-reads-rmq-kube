@@ -1,0 +1,57 @@
+{
+	"connection_key": "request",
+	"result": true,
+	"redis_key": "abcdefg",
+	"filepath": "/var/lib/aion/Data/rededge_sdc/abcdef.json",
+	"api_status_code": 200,
+	"runtime_session_id": "boi9ar543dg91ipdnspi099u231280ab0v8af0ew",
+	"business_partner": 201,
+	"service_label": "ORDERS",
+	"OrdersInputParameters": {
+		"ReferenceDocument": 20000001,
+		"ReferenceDocumentItem": null
+	},
+	"Orders": {
+		"OrderID": 1,
+		"Item": [
+			{
+				"OrderID": 1,
+				"OrderItem": 1,
+				"ItemScheduleLine": [
+					{
+						"ScheduleLine": 1,
+						"SupplyChainRelationshipID": null,
+						"SupplyChainRelationshipStockConfPlantID": null,
+						"Product": "",
+						"StockConfirmationBussinessPartner": null,
+						"StockConfirmationPlant": "",
+						"StockConfirmationPlantTimeZone": "",
+						"StockConfirmationPlantBatch": "",
+						"StockConfirmationPlantBatchValidityStartDate": null,
+						"StockConfirmationPlantBatchValidityEndDate": null,
+						"RequestedDeliveryDate": null,
+						"RequestedDeliveryTime": null,
+						"ConfirmedDeliveryDate": null,
+						"ScheduleLineOrderQuantity": null,
+						"OriginalOrderQuantityInBaseUnit": null,
+						"ConfirmedOrderQuantityByPDTAvailCheckInBaseUnit": null,
+						"ConfirmedOrderQuantityByPDTAvailCheck": null,
+						"DeliveredQuantityInBaseUnit": null,
+						"UndeliveredQuantityInBaseUnit": null,
+						"OpenConfirmedQuantityInBaseUnit": null,
+						"StockIsFullyConfirmed": null,
+						"PlusMinusFlag": "",
+						"ItemScheduleLineDeliveryBlockStatus": null,
+						"IsCancelled": null,
+						"IsMarkedForDeletion": null
+					}
+				]
+			}
+		]
+	},
+	"api_schema": "DPFMOrdersReads",
+	"accepter": [
+		"ItemScheduleLines"
+	],
+	"deleted": false
+}
