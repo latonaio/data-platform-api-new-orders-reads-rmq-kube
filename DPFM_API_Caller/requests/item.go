@@ -4,6 +4,7 @@ type Item struct {
 	OrderID                                       int      `json:"OrderID"`
 	OrderItem                                     int      `json:"OrderItem"`
 	OrderItemCategory                             string   `json:"OrderItemCategory"`
+	OrderStatus                      			  string   `json:"OrderStatus"`
 	SupplyChainRelationshipID                     int      `json:"SupplyChainRelationshipID"`
 	SupplyChainRelationshipDeliveryID             *int     `json:"SupplyChainRelationshipDeliveryID"`
 	SupplyChainRelationshipDeliveryPlantID        *int     `json:"SupplyChainRelationshipDeliveryPlantID"`

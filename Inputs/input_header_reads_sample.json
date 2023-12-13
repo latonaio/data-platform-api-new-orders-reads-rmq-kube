@@ -16,6 +16,7 @@
 		"OrderID": null,
 		"OrderDate": "",
 		"OrderType": "",
+		"OrderStatus": "",
 		"SupplyChainRelationshipID": null,
 		"SupplyChainRelationshipBillingID": null,
 		"SupplyChainRelationshipPaymentID": null,
@@ -93,6 +94,7 @@
 			{
 				"OrderItem": null,
 				"OrderItemCategory": "",
+				"OrderStatus": "",
 				"SupplyChainRelationshipID": null,
 				"SupplyChainRelationshipDeliveryID": null,
 				"SupplyChainRelationshipDeliveryPlantID": null,
