@@ -20,11 +20,22 @@ type Item struct {
 	OrderItemTextByBuyer                          string   `json:"OrderItemTextByBuyer"`
 	OrderItemTextBySeller                         string   `json:"OrderItemTextBySeller"`
 	Product                                       string   `json:"Product"`
+	SizeOrDimensionText                           *string  `json:"SizeOrDimensionText"`
 	ProductStandardID                             *string  `json:"ProductStandardID"`
 	ProductGroup                                  *string  `json:"ProductGroup"`
+	ProductSpecification                          *string  `json:"ProductSpecification"`
+	MarkingOfMaterial                             *string  `json:"MarkingOfMaterial"`
 	BaseUnit                                      string   `json:"BaseUnit"`
+	DeliveryUnit                                  string   `json:"DeliveryUnit"`
+	ProductionVersion				 			  *int     `json:"ProductionVersion"`
+	ProductionVersionItem			 			  *int     `json:"ProductionVersionItem"`
 	BillOfMaterial                                *int     `json:"BillOfMaterial"`
 	BillOfMaterialItem                            *int     `json:"BillOfMaterialItem"`
+	ProductionOrder					 			  *int     `json:"ProductionOrder"`
+	ProductionOrderItem				 			  *int     `json:"ProductionOrderItem"`
+	Operations						 			  *int     `json:"Operations"`
+	OperationsItem					 			  *int     `json:"OperationsItem"`
+	OperationID						 			  *int     `json:"OperationID"`
 	PricingDate                                   string   `json:"PricingDate"`
 	PriceDetnExchangeRate                         *float32 `json:"PriceDetnExchangeRate"`
 	RequestedDeliveryDate                         string   `json:"RequestedDeliveryDate"`
@@ -47,7 +58,6 @@ type Item struct {
 	DeliverFromPlantBatchValidityStartTime        *string  `json:"DeliverFromPlantBatchValidityStartTime"`
 	DeliverFromPlantBatchValidityEndDate          *string  `json:"DeliverFromPlantBatchValidityEndDate"`
 	DeliverFromPlantBatchValidityEndTime          *string  `json:"DeliverFromPlantBatchValidityEndTime"`
-	DeliveryUnit                                  string   `json:"DeliveryUnit"`
 	StockConfirmationBusinessPartner              *int     `json:"StockConfirmationBusinessPartner"`
 	StockConfirmationPlant                        *string  `json:"StockConfirmationPlant"`
 	StockConfirmationPlantTimeZone                *string  `json:"StockConfirmationPlantTimeZone"`
@@ -87,9 +97,10 @@ type Item struct {
 	ProductionPlantBatchValidityStartTime         *string  `json:"ProductionPlantBatchValidityStartTime"`
 	ProductionPlantBatchValidityEndDate           *string  `json:"ProductionPlantBatchValidityEndDate"`
 	ProductionPlantBatchValidityEndTime           *string  `json:"ProductionPlantBatchValidityEndTime"`
-	InspectionPlan                                *int     `json:"InspectionPlan"`
+	InspectionPlantBusinessPartner                *int     `json:"InspectionPlantBusinessPartner"`
 	InspectionPlant                               *string  `json:"InspectionPlant"`
-	InspectionOrder                               *int     `json:"InspectionOrder"`
+	InspectionPlan                                *int     `json:"InspectionPlan"`
+	InspectionLot                                 *int     `json:"InspectionLot"`
 	Incoterms                                     *string  `json:"Incoterms"`
 	TransactionTaxClassification                  string   `json:"TransactionTaxClassification"`
 	ProductTaxClassificationBillToCountry         string   `json:"ProductTaxClassificationBillToCountry"`
@@ -102,6 +113,8 @@ type Item struct {
 	PaymentDueDate                                *string  `json:"PaymentDueDate"`
 	NetPaymentDays                                *int     `json:"NetPaymentDays"`
 	PaymentMethod                                 string   `json:"PaymentMethod"`
+	Contract		                 			  *int     `json:"Contract"`
+	ContractItem	                 			  *int     `json:"ContractItem"`
 	Project                                       *int     `json:"Project"`
 	WBSElement                                    *int     `json:"WBSElement"`
 	AccountingExchangeRate                        *float32 `json:"AccountingExchangeRate"`
@@ -117,8 +130,8 @@ type Item struct {
 	CountryOfOrigin                               *string  `json:"CountryOfOrigin"`
 	CountryOfOriginLanguage                       *string  `json:"CountryOfOriginLanguage"`
 	Equipment				                      *int	   `json:"Equipment"`
-	PlannedFreight				                  *int	   `json:"PlannedFreight"`
-	FreightOrder				                  *int	   `json:"FreightOrder"`
+	FreightAgreement				              *int	   `json:"FreightAgreement"`
+	FreightAgreementItem				          *int	   `json:"FreightAgreementItem"`
 	ItemBlockStatus                               *bool    `json:"ItemBlockStatus"`
 	ItemDeliveryBlockStatus                       *bool    `json:"ItemDeliveryBlockStatus"`
 	ItemBillingBlockStatus                        *bool    `json:"ItemBillingBlockStatus"`

@@ -36,6 +36,15 @@ type Header struct {
 	Incoterms                        *string  `json:"Incoterms"`
 	PaymentTerms                     string   `json:"PaymentTerms"`
 	PaymentMethod                    string   `json:"PaymentMethod"`
+	Contract		                 *int     `json:"Contract"`
+	ContractItem	                 *int     `json:"ContractItem"`
+	ProductionVersion				 *int     `json:"ProductionVersion"`
+	ProductionVersionItem			 *int     `json:"ProductionVersionItem"`
+	ProductionOrder					 *int     `json:"ProductionOrder"`
+	ProductionOrderItem				 *int     `json:"ProductionOrderItem"`
+	Operations						 *int     `json:"Operations"`
+	OperationsItem					 *int     `json:"OperationsItem"`
+	OperationID						 *int     `json:"OperationID"`
 	ReferenceDocument                *int     `json:"ReferenceDocument"`
 	ReferenceDocumentItem            *int     `json:"ReferenceDocumentItem"`
 	AccountAssignmentGroup           string   `json:"AccountAssignmentGroup"`
@@ -47,6 +56,8 @@ type Header struct {
 	HeaderDeliveryBlockStatus        *bool    `json:"HeaderDeliveryBlockStatus"`
 	HeaderBillingBlockStatus         *bool    `json:"HeaderBillingBlockStatus"`
 	ExternalReferenceDocument        *string  `json:"ExternalReferenceDocument"`
+	CertificateAuthorityChain        *string  `json:"CertificateAuthorityChain"`
+	UsageControlChain        		 *string  `json:"UsageControlChain"`
 	CreationDate                     string   `json:"CreationDate"`
 	CreationTime                     string   `json:"CreationTime"`
 	LastChangeDate                   string   `json:"LastChangeDate"`

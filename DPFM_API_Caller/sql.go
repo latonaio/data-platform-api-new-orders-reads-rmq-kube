@@ -116,7 +116,7 @@ func (c *DPFMAPICaller) Header(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_header_data AS header
-		` + where + ` ORDER BY header.IsMarkedForDeletion ASC, header.IsCancelled ASC, header.OrderID DESC;`,
+		` + where + ` ORDER BY header.IsMarkedForDeletion ASC, header.IsCancelled ASC, header.OrderID ASC;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -182,7 +182,7 @@ func (c *DPFMAPICaller) Header(
 //		ON header.PaymentTerms = terms.PaymentTerms
 //		INNER JOIN DataPlatformMastersAndTransactionsMysqlKube.data_platform_payment_method_payment_method_text_data AS method
 //		ON header.PaymentMethod = method.PaymentMethod
-//		` + where + idWhere + ` ORDER BY header.IsMarkedForDeletion ASC, header.IsCancelled ASC, header.OrderID DESC ;`)
+//		` + where + idWhere + ` ORDER BY header.IsMarkedForDeletion ASC, header.IsCancelled ASC, header.OrderID ASC ;`)
 //	if err != nil {
 //		*errs = append(*errs, err)
 //		return nil
@@ -311,34 +311,9 @@ func (c *DPFMAPICaller) Item(
 		where = fmt.Sprintf("%s\nAND OrderItem IN ( %s ) ", where, itemIDs[1:])
 	}
 	rows, err := c.db.Query(
-		`SELECT 
-		OrderID, OrderItem, OrderItemCategory, SupplyChainRelationshipID, SupplyChainRelationshipDeliveryID,
-		SupplyChainRelationshipDeliveryPlantID, SupplyChainRelationshipStockConfPlantID, SupplyChainRelationshipProductionPlantID, 
-		OrderItemText, OrderItemTextByBuyer, OrderItemTextBySeller, Product, ProductStandardID, ProductGroup, BaseUnit, PricingDate, 
-		PriceDetnExchangeRate, RequestedDeliveryDate, RequestedDeliveryTime, DeliverToParty, DeliverFromParty, CreationDate, CreationTime, 
-		LastChangeDate, LastChangeTime, DeliverToPlant, DeliverToPlantTimeZone, DeliverToPlantStorageLocation, ProductIsBatchManagedInDeliverToPlant, 
-		BatchMgmtPolicyInDeliverToPlant, DeliverToPlantBatch, DeliverToPlantBatchValidityStartDate, DeliverToPlantBatchValidityStartTime,
-		DeliverToPlantBatchValidityEndDate, DeliverToPlantBatchValidityEndTime, DeliverFromPlant, DeliverFromPlantTimeZone, 
-		DeliverFromPlantStorageLocation, ProductIsBatchManagedInDeliverFromPlant, BatchMgmtPolicyInDeliverFromPlant, 
-		DeliverFromPlantBatch, DeliverFromPlantBatchValidityStartDate, DeliverFromPlantBatchValidityStartTime, DeliverFromPlantBatchValidityEndDate,
-		DeliverFromPlantBatchValidityEndTime, DeliveryUnit, StockConfirmationBusinessPartner, StockConfirmationPlant, 
-		StockConfirmationPlantTimeZone, ProductIsBatchManagedInStockConfirmationPlant, BatchMgmtPolicyInStockConfirmationPlant, 
-		StockConfirmationPlantBatch, StockConfirmationPlantBatchValidityStartDate, StockConfirmationPlantBatchValidityStartTime, 
-		StockConfirmationPlantBatchValidityEndDate, StockConfirmationPlantBatchValidityEndTime, ServicesRenderingDate, 
-		OrderQuantityInBaseUnit, OrderQuantityInDeliveryUnit, QuantityPerPackage, StockConfirmationPolicy, StockConfirmationStatus, 
-		ConfirmedOrderQuantityInBaseUnit, ItemWeightUnit, ProductGrossWeight, ItemGrossWeight, ProductNetWeight, ItemNetWeight,
-		InternalCapacityQuantity, InternalCapacityQuantityUnit, NetAmount, TaxAmount, GrossAmount, InvoiceDocumentDate,
-		ProductionPlantBusinessPartner, ProductionPlant, ProductionPlantTimeZone, ProductionPlantStorageLocation, 
-		ProductIsBatchManagedInProductionPlant, BatchMgmtPolicyInProductionPlant, ProductionPlantBatch, ProductionPlantBatchValidityStartDate, 
-		ProductionPlantBatchValidityStartTime, ProductionPlantBatchValidityEndDate, ProductionPlantBatchValidityEndTime, InspectionPlan, InspectionPlant, InspectionOrder, 
-		Incoterms, TransactionTaxClassification, ProductTaxClassificationBillToCountry, ProductTaxClassificationBillFromCountry, 
-		DefinedTaxClassification, AccountAssignmentGroup, ProductAccountAssignmentGroup, PaymentTerms, DueCalculationBaseDate,
-		PaymentDueDate, NetPaymentDays, PaymentMethod, Project, AccountingExchangeRate, ReferenceDocument, ReferenceDocumentItem,
-		ItemCompleteDeliveryIsDefined, ItemDeliveryStatus, IssuingStatus, ReceivingStatus, ItemBillingStatus, TaxCode, TaxRate, 
-		CountryOfOrigin, CountryOfOriginLanguage, ItemBlockStatus, ItemDeliveryBlockStatus, ItemBillingBlockStatus, IsCancelled,
-		IsMarkedForDeletion
+		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data
-		`+where+` ORDER BY IsMarkedForDeletion ASC, IsCancelled ASC, OrderID DESC, OrderItem ASC ;`, args...,
+		`+where+` ORDER BY IsMarkedForDeletion ASC, IsCancelled ASC, OrderID ASC, OrderItem ASC ;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -354,6 +329,7 @@ func (c *DPFMAPICaller) Item(
 
 	return data
 }
+
 func (c *DPFMAPICaller) Items(
 	mtx *sync.Mutex,
 	input *dpfm_api_input_reader.SDC,
@@ -389,7 +365,7 @@ func (c *DPFMAPICaller) Items(
 		`SELECT 
 			*
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_data as item
-		` + where + ` ORDER BY item.IsMarkedForDeletion ASC, item.IsCancelled ASC, item.OrderID DESC, item.OrderItem ASC ;`)
+		` + where + ` ORDER BY item.IsMarkedForDeletion ASC, item.IsCancelled ASC, item.OrderID ASC, item.OrderItem ASC ;`)
 	if err != nil {
 		*errs = append(*errs, err)
 		return nil
@@ -427,7 +403,7 @@ func (c *DPFMAPICaller) ItemPricingElement(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_pricing_element_data
 		WHERE (OrderID, OrderItem) IN ( `+repeat+` )
-		ORDER BY OrderID DESC, OrderItem DESC, PricingProcedureCounter DESC ;`, args...,
+		ORDER BY OrderID ASC, OrderItem ASC, PricingProcedureCounter ASC ;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -462,7 +438,7 @@ func (c *DPFMAPICaller) ItemPricingElements(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_pricing_element_data
-		` + where + ` ORDER BY OrderID DESC, OrderItem DESC, PricingProcedureCounter DESC;`,
+		` + where + ` ORDER BY OrderID ASC, OrderItem ASC, PricingProcedureCounter ASC;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -503,7 +479,7 @@ func (c *DPFMAPICaller) ItemScheduleLine(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_schedule_line_data
 		WHERE (OrderID, OrderItem, ScheduleLine) IN ( `+repeat+` ) 
-		ORDER BY OrderID DESC, OrderItem DESC, ScheduleLine DESC;`, args...,
+		ORDER BY OrderID ASC, OrderItem ASC, ScheduleLine ASC;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -535,7 +511,7 @@ func (c *DPFMAPICaller) ItemScheduleLines(
 	rows, err := c.db.Query(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_item_schedule_line_data
-		` + where + ` ORDER BY OrderID DESC, OrderItem DESC, ScheduleLine DESC;`,
+		` + where + ` ORDER BY OrderID ASC, OrderItem ASC, ScheduleLine ASC;`,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -574,7 +550,7 @@ func (c *DPFMAPICaller) Address(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_address_data
 		WHERE (OrderID, AddressID) IN ( `+repeat+` ) 
-		ORDER BY OrderID DESC, AddressID DESC;`, args...,
+		ORDER BY OrderID ASC, AddressID ASC;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)
@@ -613,7 +589,7 @@ func (c *DPFMAPICaller) Partner(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data
 		WHERE (OrderID, PartnerFunction, BusinessPartner) IN ( `+repeat+` ) 
-		ORDER BY OrderID DESC, BusinessPartner DESC, AddressID DESC;`, args...,
+		ORDER BY OrderID ASC, BusinessPartner ASC, AddressID ASC;`, args...,
 	)
 	if err != nil {
 		*errs = append(*errs, err)

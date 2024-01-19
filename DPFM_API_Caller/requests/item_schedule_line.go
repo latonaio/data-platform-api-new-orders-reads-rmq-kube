@@ -26,6 +26,9 @@ type ItemScheduleLine struct {
 	StockIsFullyConfirmed                           *bool    `json:"StockIsFullyConfirmed"`
 	PlusMinusFlag                                   *string  `json:"PlusMinusFlag"`
 	ItemScheduleLineDeliveryBlockStatus             *bool    `json:"ItemScheduleLineDeliveryBlockStatus"`
+	ExternalReferenceDocument        			    *string  `json:"ExternalReferenceDocument"`
+	ExternalReferenceDocumentItem      			    *string  `json:"ExternalReferenceDocumentItem"`
+	ExternalReferenceDocumentItemScheduleLine	    *string  `json:"ExternalReferenceDocumentItemScheduleLine"`
 	CreationDate               						string   `json:"CreationDate"`
 	CreationTime               						string   `json:"CreationTime"`
 	LastChangeDate             						string   `json:"LastChangeDate"`
