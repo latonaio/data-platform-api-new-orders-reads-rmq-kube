@@ -427,13 +427,7 @@ func (c *DPFMAPICaller) ItemPricingElements(
 	errs *[]error,
 	log *logger.Logger,
 ) *[]dpfm_api_output_formatter.ItemPricingElement {
-	where := fmt.Sprintf("WHERE OrderID = %d", input.Header.OrderID)
-	if input.Header.Buyer != nil && *input.Header.Buyer != 0 {
-		where = fmt.Sprintf("%s\nAND Buyer = %d", where, *input.Header.Buyer)
-	}
-	if input.Header.Seller != nil && *input.Header.Seller != 0 {
-		where = fmt.Sprintf("%s\nAND Seller = %d", where, *input.Header.Seller)
-	}
+	where := fmt.Sprintf("WHERE OrderID = %d AND OrderItem = %d", input.Header.OrderID, input.Header.Item[0].OrderItem)
 
 	rows, err := c.db.Query(
 		`SELECT *

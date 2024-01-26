@@ -16,7 +16,7 @@ type ItemScheduleLine struct {
 	RequestedDeliveryDate                           string   `json:"RequestedDeliveryDate"`
 	RequestedDeliveryTime                           string   `json:"RequestedDeliveryTime"`
 	ConfirmedDeliveryDate                           *string  `json:"ConfirmedDeliveryDate"`
-	ConfirmedDeliveryTime                           *string  `json:"ConfirmedDeliveryDate"`
+	ConfirmedDeliveryTime                           *string  `json:"ConfirmedDeliveryTime"`
 	ScheduleLineOrderQuantityInBaseUnit             float32  `json:"ScheduleLineOrderQuantityInBaseUnit"`
 	OriginalOrderQuantityInBaseUnit                 float32  `json:"OriginalOrderQuantityInBaseUnit"`
 	ConfirmedOrderQuantityByPDTAvailCheckInBaseUnit *float32 `json:"ConfirmedOrderQuantityByPDTAvailCheckInBaseUnit"`
@@ -26,13 +26,13 @@ type ItemScheduleLine struct {
 	StockIsFullyConfirmed                           *bool    `json:"StockIsFullyConfirmed"`
 	PlusMinusFlag                                   *string  `json:"PlusMinusFlag"`
 	ItemScheduleLineDeliveryBlockStatus             *bool    `json:"ItemScheduleLineDeliveryBlockStatus"`
-	ExternalReferenceDocument        			    *string  `json:"ExternalReferenceDocument"`
-	ExternalReferenceDocumentItem      			    *string  `json:"ExternalReferenceDocumentItem"`
-	ExternalReferenceDocumentItemScheduleLine	    *string  `json:"ExternalReferenceDocumentItemScheduleLine"`
-	CreationDate               						string   `json:"CreationDate"`
-	CreationTime               						string   `json:"CreationTime"`
-	LastChangeDate             						string   `json:"LastChangeDate"`
-	LastChangeTime             						string   `json:"LastChangeTime"`
+	ExternalReferenceDocument                       *string  `json:"ExternalReferenceDocument"`
+	ExternalReferenceDocumentItem                   *string  `json:"ExternalReferenceDocumentItem"`
+	ExternalReferenceDocumentItemScheduleLine       *string  `json:"ExternalReferenceDocumentItemScheduleLine"`
+	CreationDate                                    string   `json:"CreationDate"`
+	CreationTime                                    string   `json:"CreationTime"`
+	LastChangeDate                                  string   `json:"LastChangeDate"`
+	LastChangeTime                                  string   `json:"LastChangeTime"`
 	IsCancelled                                     *bool    `json:"IsCancelled"`
 	IsMarkedForDeletion                             *bool    `json:"IsMarkedForDeletion"`
 }
