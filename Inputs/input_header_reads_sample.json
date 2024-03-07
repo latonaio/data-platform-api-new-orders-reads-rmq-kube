@@ -83,6 +83,8 @@
 		"PaymentMethod": "",
 		"Contract": null,
 		"ContractItem": null,
+		"Project": null,
+		"WBSElement": null,
         "ProductionVersion": null,
         "ProductionVersionItem": null,
         "ProductionOrder": null,

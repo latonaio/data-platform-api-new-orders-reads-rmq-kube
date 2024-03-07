@@ -77,6 +77,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				partner = c.Partner(mtx, input, output, errs, log)
 			}()
+		case "Partners":
+			func() {
+				partner = c.Partners(mtx, input, output, errs, log)
+			}()
 
 		default:
 		}
@@ -343,6 +347,10 @@ func (c *DPFMAPICaller) Items(
 	}
 	where := "WHERE 1 = 1"
 
+	if input.Header.OrderID != 0 {
+		where = fmt.Sprintf("WHERE OrderID = %d ", input.Header.OrderID)
+	}
+
 	if item != nil {
 		if item.ItemCompleteDeliveryIsDefined != nil {
 			where = fmt.Sprintf("%s\nAND item.ItemCompleteDeliveryIsDefined = %v", where, *item.ItemCompleteDeliveryIsDefined)
@@ -583,6 +591,45 @@ func (c *DPFMAPICaller) Partner(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data
 		WHERE (OrderID, PartnerFunction, BusinessPartner) IN ( `+repeat+` ) 
+		ORDER BY OrderID ASC, BusinessPartner ASC, AddressID ASC;`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToPartner(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) Partners(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.Partner {
+	var args []interface{}
+	orderID := input.Header.OrderID
+	partner := input.Header.Partner
+
+	cnt := 0
+	for _, _ = range partner {
+		args = append(args, orderID)
+		cnt++
+	}
+	repeat := strings.Repeat("(?),", cnt-1) + "(?)"
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_partner_data
+		WHERE (OrderID) IN ( `+repeat+` ) 
 		ORDER BY OrderID ASC, BusinessPartner ASC, AddressID ASC;`, args...,
 	)
 	if err != nil {
