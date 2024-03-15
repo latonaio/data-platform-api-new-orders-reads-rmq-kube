@@ -73,6 +73,10 @@ func (c *DPFMAPICaller) readSqlProcess(
 			func() {
 				address = c.Address(mtx, input, output, errs, log)
 			}()
+		case "Addresses":
+			func() {
+				address = c.Addresses(mtx, input, output, errs, log)
+			}()
 		case "Partner":
 			func() {
 				partner = c.Partner(mtx, input, output, errs, log)
@@ -552,6 +556,45 @@ func (c *DPFMAPICaller) Address(
 		`SELECT *
 		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_address_data
 		WHERE (OrderID, AddressID) IN ( `+repeat+` ) 
+		ORDER BY OrderID ASC, AddressID ASC;`, args...,
+	)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+	defer rows.Close()
+
+	data, err := dpfm_api_output_formatter.ConvertToAddress(rows)
+	if err != nil {
+		*errs = append(*errs, err)
+		return nil
+	}
+
+	return data
+}
+
+func (c *DPFMAPICaller) Addresses(
+	mtx *sync.Mutex,
+	input *dpfm_api_input_reader.SDC,
+	output *dpfm_api_output_formatter.SDC,
+	errs *[]error,
+	log *logger.Logger,
+) *[]dpfm_api_output_formatter.Address {
+	var args []interface{}
+	orderID := input.Header.OrderID
+	address := input.Header.Address
+
+	cnt := 0
+	for _, _ = range address {
+		args = append(args, orderID)
+		cnt++
+	}
+	repeat := strings.Repeat("(?),", cnt-1) + "(?)"
+
+	rows, err := c.db.Query(
+		`SELECT *
+		FROM DataPlatformMastersAndTransactionsMysqlKube.data_platform_orders_address_data
+		WHERE (OrderID) IN ( `+repeat+` ) 
 		ORDER BY OrderID ASC, AddressID ASC;`, args...,
 	)
 	if err != nil {
